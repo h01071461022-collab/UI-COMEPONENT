@@ -1,0 +1,4047 @@
+<title>UI 엘리먼트 도감</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: specimen catalogue — fixed index column on the left, one numbered spec sheet per element on the right (light only, by request) */
+:root{
+  --paper:#F3F4F1;
+  --sheet:#FFFFFF;
+  --ink:#0E100F;
+  --ink-2:#363B37;
+  --ink-3:#62685F;
+  --line:#D3D6CF;
+  --line-2:#E5E7E1;
+  --marker:#FFE14D;
+  --signal:#1F3FD1;
+  --f-display:'Archivo','Arial Narrow',Arial,sans-serif;
+  --f-body:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  --side:304px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:100%}
+
+/* index column */
+.index{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--sheet);border-right:1px solid var(--line)}
+.index-head{padding:22px 20px 14px;border-bottom:1px solid var(--line)}
+.index-kicker{margin:0;font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.index-title{margin:6px 0 4px;font-family:var(--f-display);font-stretch:118%;font-weight:800;font-size:25px;line-height:1.05;letter-spacing:-.01em}
+.index-title span{display:block;font-family:var(--f-body);font-stretch:100%;font-weight:600;font-size:15px;letter-spacing:0;margin-top:4px}
+.index-src{margin:0;font-size:12px;color:var(--ink-3)}
+.index-src a{color:var(--ink-2);text-underline-offset:2px}
+.index-tools{display:grid;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.find{position:relative}
+.find svg{position:absolute;left:10px;top:50%;width:16px;height:16px;transform:translateY(-50%);fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round}
+.find input{width:100%;height:36px;padding:0 10px 0 34px;border:1px solid var(--line);border-radius:6px;background:var(--paper);font:inherit;font-size:14px;color:var(--ink)}
+.find input:focus{outline:none;border-color:var(--ink);background:var(--sheet)}
+.cats{display:flex;flex-wrap:wrap;gap:6px}
+.cats button{height:28px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--sheet);font-size:12.5px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.cats button:hover{border-color:var(--ink)}
+.cats button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.cats b{font-family:var(--f-mono);font-weight:500;font-size:11px;margin-left:4px;opacity:.7}
+.list{flex:1;overflow-y:auto;margin:0;padding:8px 10px 24px;list-style:none;overscroll-behavior:contain}
+.list a{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:baseline;gap:8px;padding:7px 10px;border-radius:6px;text-decoration:none;color:var(--ink)}
+.list a:hover{background:var(--paper)}
+.list a[aria-current="page"]{background:var(--marker)}
+.list .n{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.list a[aria-current="page"] .n{color:var(--ink)}
+.list .en{font-family:var(--f-display);font-stretch:108%;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list .ko{display:block;font-family:var(--f-body);font-stretch:100%;font-weight:400;font-size:12px;color:var(--ink-3)}
+.list a[aria-current="page"] .ko{color:var(--ink-2)}
+.list .c{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3)}
+.list-empty{padding:16px 10px;font-size:13px;color:var(--ink-3)}
+
+/* main sheet */
+.main{min-width:0;padding:32px clamp(16px,4vw,56px) 64px;display:grid;gap:28px;align-content:start;max-width:1180px}
+.mobile-bar{display:none}
+.sheet-head{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:28px;row-gap:6px;align-items:end;padding-bottom:22px;border-bottom:2px solid var(--ink)}
+.sheet-no{grid-row:span 2;font-family:var(--f-mono);font-weight:500;font-size:clamp(44px,7vw,84px);line-height:.9;letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums}
+.sheet-tags{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.sheet-tags .cat{padding:2px 8px;border:1px solid var(--ink);border-radius:3px;color:var(--ink)}
+.sheet-title{margin:0;font-family:var(--f-display);font-stretch:122%;font-weight:850;font-size:clamp(34px,5.4vw,64px);line-height:.95;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:anywhere}
+.sheet-title small{font-family:var(--f-body);font-stretch:100%;font-weight:500;font-size:.38em;letter-spacing:0;margin-left:.5em;color:var(--ink-2);white-space:nowrap}
+.sheet-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px}
+.sheet-desc{margin:0;font-size:16px;line-height:1.7;max-width:62ch}
+.sheet-a11y{margin:0;padding:12px 14px;border:1px dashed var(--line);border-radius:6px;font-size:13.5px;color:var(--ink-2);align-self:start}
+.sheet-a11y b{display:block;font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+
+/* stage */
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.panel-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px 10px 16px;border-bottom:1px solid var(--line)}
+.panel-label{font-family:var(--f-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.panel-label span{font-weight:400;color:var(--ink-3);letter-spacing:.04em;text-transform:none;margin-left:8px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{height:30px;padding:0 10px;border:0;background:var(--sheet);font-size:12.5px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.tool-btn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--sheet);font-size:12.5px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.tool-btn:hover,.seg button:not([aria-pressed="true"]):hover{background:var(--paper);color:var(--ink)}
+.tool-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.stage{position:relative;display:flex;justify-content:center;padding:18px;background-color:var(--paper);background-image:radial-gradient(var(--line) 1px,transparent 1.2px);background-size:16px 16px}
+.stage iframe{display:block;width:100%;border:1px solid var(--line-2);border-radius:6px;background:#fff;transition:width .25s ease}
+.stage.is-mobile iframe{width:390px;max-width:100%}
+
+/* source */
+.tabs{display:flex;gap:2px}
+.tabs button{position:relative;height:34px;padding:0 14px;border:0;border-radius:6px 6px 0 0;background:transparent;font-family:var(--f-mono);font-size:13px;font-weight:500;color:var(--ink-3);cursor:pointer}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:600}
+.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:10px;right:10px;bottom:-11px;height:3px;background:var(--ink)}
+.tabs small{font-weight:400;font-size:11px;color:var(--ink-3);margin-left:6px}
+.code{margin:0;max-height:520px;overflow:auto;padding:18px 20px;background:#FBFBF9;font-family:var(--f-mono);font-size:13px;line-height:1.65;tab-size:2;color:var(--ink)}
+.code code{white-space:pre}
+.code-note{margin:0;padding:10px 16px;border-top:1px solid var(--line-2);font-size:12.5px;color:var(--ink-3)}
+.code-note code{font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.hljs-tag,.hljs-name,.hljs-selector-tag,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-selector-attr{color:#9A1B57}
+.hljs-attr,.hljs-property{color:#7A4E00}
+.hljs-string,.hljs-regexp{color:#0D6638}
+.hljs-keyword,.hljs-built_in,.hljs-literal,.hljs-attribute,.hljs-meta{color:#1F3FD1}
+.hljs-number{color:#A93C0A}
+.hljs-comment{color:#6A706B;font-style:italic}
+.hljs-title,.hljs-title.function_,.hljs-title.class_{color:var(--ink);font-weight:600}
+.hljs-params,.hljs-variable,.hljs-punctuation{color:var(--ink-2)}
+
+/* pager */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:grid;gap:2px;padding:14px 16px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);text-decoration:none}
+.pager a:hover{border-color:var(--ink)}
+.pager a.next{text-align:right}
+.pager small{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.pager b{font-family:var(--f-display);font-stretch:112%;font-weight:700;font-size:17px}
+.pager a[hidden]{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);padding:9px 16px;border-radius:6px;background:var(--ink);color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- narrow ---------- */
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .mobile-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-32px calc(-1 * clamp(16px,4vw,56px)) 0;padding:10px 16px;background:var(--sheet);border-bottom:1px solid var(--line)}
+  .mobile-bar b{font-family:var(--f-display);font-stretch:115%;font-weight:800;font-size:17px}
+  .index{position:fixed;inset:0 auto 0 0;width:min(86vw,340px);height:100%;z-index:40;transform:translateX(-102%);transition:transform .25s ease;box-shadow:none}
+  .index.open{transform:none;box-shadow:0 0 0 100vmax rgba(14,16,15,.35)}
+  .sheet-body{grid-template-columns:minmax(0,1fr)}
+  .sheet-head{grid-template-columns:minmax(0,1fr)}
+  .sheet-no{grid-row:auto;font-size:40px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="shell">
+  <aside class="index" id="index" aria-label="UI 엘리먼트 목록">
+    <div class="index-head">
+      <p class="index-kicker">Glossary · 32 entries</p>
+      <h2 class="index-title">UI Element Index<span>UI 엘리먼트 도감</span></h2>
+      <p class="index-src">항목 출처: <a href="https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/" target="_blank" rel="noopener">CareerFoundry UI Element Glossary</a></p>
+    </div>
+    <div class="index-tools">
+      <label class="find" for="find">
+        <span class="sr">엘리먼트 검색</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+        <input id="find" type="search" placeholder="이름으로 찾기 (영문·한글)" autocomplete="off">
+      </label>
+      <div class="cats" id="cats" role="group" aria-label="분류 필터"></div>
+    </div>
+    <ul class="list" id="list"></ul>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="mobile-bar">
+      <b>UI Element Index</b>
+      <button class="tool-btn" id="open-index" aria-controls="index" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>목록 32
+      </button>
+    </div>
+
+    <header class="sheet-head">
+      <div class="sheet-no" id="s-no">01</div>
+      <div class="sheet-tags"><span class="cat" id="s-cat">컨테이너</span><span id="s-catdesc"></span></div>
+      <h1 class="sheet-title" id="s-title">Accordion</h1>
+    </header>
+
+    <div class="sheet-body">
+      <p class="sheet-desc" id="s-desc"></p>
+      <p class="sheet-a11y"><b>접근성 · 구현 포인트</b><span id="s-a11y"></span></p>
+    </div>
+
+    <section class="panel" aria-labelledby="pv-label">
+      <div class="panel-bar">
+        <span class="panel-label" id="pv-label">Preview<span>직접 눌러 보세요</span></span>
+        <div class="tools">
+          <div class="seg" role="group" aria-label="미리보기 너비">
+            <button type="button" id="vw-full" aria-pressed="true">전체 너비</button>
+            <button type="button" id="vw-mobile" aria-pressed="false">모바일 390</button>
+          </div>
+          <button type="button" class="tool-btn" id="rerun">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>다시 실행
+          </button>
+        </div>
+      </div>
+      <div class="stage" id="stage"><iframe id="frame" sandbox="allow-scripts" title="미리보기"></iframe></div>
+    </section>
+
+    <section class="panel" aria-label="소스 코드">
+      <div class="panel-bar">
+        <div class="tabs" role="tablist" aria-label="소스 언어">
+          <button type="button" role="tab" id="tab-html" aria-controls="code" aria-selected="true" data-lang="html">HTML<small></small></button>
+          <button type="button" role="tab" id="tab-css" aria-controls="code" aria-selected="false" data-lang="css">CSS<small></small></button>
+          <button type="button" role="tab" id="tab-js" aria-controls="code" aria-selected="false" data-lang="js">JavaScript<small></small></button>
+        </div>
+        <button type="button" class="tool-btn" id="copy">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span>코드 복사</span>
+        </button>
+      </div>
+      <pre class="code" id="code" role="tabpanel" tabindex="0"><code id="code-inner"></code></pre>
+      <p class="code-note">미리보기에는 공통 리셋(<code>box-sizing</code>, 본문 폰트 IBM Plex Sans KR, 가운데 정렬)이 함께 적용됩니다. 위 코드는 컴포넌트에 필요한 부분 전체입니다.</p>
+    </section>
+
+    <nav class="pager" aria-label="이전·다음 엘리먼트">
+      <a class="prev" id="prev" href="#"><small>← 이전</small><b></b></a>
+      <a class="next" id="next" href="#"><small>다음 →</small><b></b></a>
+    </nav>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+var ITEMS = [];
+function E(o){ ITEMS.push(o); }
+
+/* ---------------- 01 Accordion ---------------- */
+E({id:'accordion', en:'Accordion', ko:'아코디언', cat:'box', h:380,
+desc:'제목을 눌러 내용을 펼치고 접는 컨테이너입니다. 긴 FAQ나 설정 항목처럼 많은 정보를 좁은 공간에 담아야 할 때, 사용자가 필요한 부분만 골라 읽을 수 있게 해 줍니다.',
+a11y:'제목은 실제 button으로 만들고 aria-expanded로 열림 상태를 알립니다. 패널은 role="region"과 aria-labelledby로 제목과 연결합니다. 높이 애니메이션은 grid-template-rows 0fr→1fr 전환을 씁니다.',
+html:`<div class="acc">
+  <div class="acc-item open">
+    <h3><button class="acc-trigger" id="acc-t1" aria-expanded="true" aria-controls="acc-p1">
+      배송은 얼마나 걸리나요?<span class="acc-icon" aria-hidden="true"></span>
+    </button></h3>
+    <div class="acc-panel" id="acc-p1" role="region" aria-labelledby="acc-t1">
+      <div class="acc-inner"><p>결제 후 영업일 기준 2–3일 안에 도착합니다. 제주와 도서산간 지역은 하루가 더 걸릴 수 있습니다.</p></div>
+    </div>
+  </div>
+  <div class="acc-item">
+    <h3><button class="acc-trigger" id="acc-t2" aria-expanded="false" aria-controls="acc-p2">
+      반품은 언제까지 신청할 수 있나요?<span class="acc-icon" aria-hidden="true"></span>
+    </button></h3>
+    <div class="acc-panel" id="acc-p2" role="region" aria-labelledby="acc-t2">
+      <div class="acc-inner"><p>상품을 받은 날로부터 14일 안에 주문 내역에서 신청하세요. 포장을 뜯지 않은 상품은 반품 배송비가 없습니다.</p></div>
+    </div>
+  </div>
+  <div class="acc-item">
+    <h3><button class="acc-trigger" id="acc-t3" aria-expanded="false" aria-controls="acc-p3">
+      사이즈 교환도 가능한가요?<span class="acc-icon" aria-hidden="true"></span>
+    </button></h3>
+    <div class="acc-panel" id="acc-p3" role="region" aria-labelledby="acc-t3">
+      <div class="acc-inner"><p>같은 상품의 다른 사이즈로 한 번 무료 교환해 드립니다. 재고가 없으면 환불로 처리됩니다.</p></div>
+    </div>
+  </div>
+</div>`,
+css:`.acc {
+  width: min(100%, 460px);
+  border-top: 2px solid #111312;
+}
+.acc-item { border-bottom: 1px solid #d4d7d1; }
+.acc h3 { margin: 0; }
+
+.acc-trigger {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.acc-trigger:hover { color: #1f3fd1; }
+.acc-trigger:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+/* + / − 아이콘 */
+.acc-icon { position: relative; flex: none; width: 14px; height: 14px; }
+.acc-icon::before,
+.acc-icon::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 6px;
+  width: 14px; height: 2px;
+  background: currentColor;
+  transition: transform .25s ease;
+}
+.acc-icon::after { transform: rotate(90deg); }
+.acc-item.open .acc-icon::after { transform: rotate(0); }
+
+/* 높이 0 → auto 애니메이션 */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .3s ease;
+}
+.acc-item.open .acc-panel { grid-template-rows: 1fr; }
+.acc-inner { overflow: hidden; }
+.acc-inner p { margin: 0; padding: 0 4px 18px; color: #4a4f4b; }`,
+js:`document.querySelectorAll('.acc-trigger').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var item = btn.closest('.acc-item');
+    var isOpen = item.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+});`});
+
+/* ---------------- 02 Bento Menu ---------------- */
+E({id:'bento-menu', en:'Bento Menu', ko:'벤토 메뉴', cat:'nav', h:380,
+desc:'도시락(벤토) 칸처럼 3×3 격자 점으로 그린 메뉴 아이콘입니다. 누르면 여러 앱이나 서비스로 이동하는 바로가기가 격자 형태로 펼쳐집니다.',
+a11y:'아이콘만 있는 버튼이므로 aria-label로 이름을 붙입니다. aria-expanded로 열림 상태를 알리고, Esc를 누르면 닫힌 뒤 버튼으로 포커스가 돌아갑니다.',
+html:`<div class="bento">
+  <button class="bento-btn" type="button" aria-label="앱 전체 보기"
+          aria-expanded="true" aria-controls="bento-pop">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="bento-pop" id="bento-pop">
+    <p class="bento-title">바로가기</p>
+    <ul>
+      <li><a href="#"><b style="--c:#1f3fd1">M</b>메일</a></li>
+      <li><a href="#"><b style="--c:#127a46">C</b>일정</a></li>
+      <li><a href="#"><b style="--c:#d42a1f">D</b>문서</a></li>
+      <li><a href="#"><b style="--c:#111312">P</b>사진</a></li>
+      <li><a href="#"><b style="--c:#8a5a00">N</b>메모</a></li>
+      <li><a href="#"><b style="--c:#4f5d24">T</b>할 일</a></li>
+    </ul>
+  </div>
+</div>`,
+css:`body { align-items: flex-start; padding-top: 40px; }
+
+.bento { position: relative; }
+
+.bento-btn {
+  display: grid;
+  grid-template-columns: repeat(3, 5px);
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid #d4d7d1;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+.bento-btn span { width: 5px; height: 5px; border-radius: 1px; background: #111312; }
+.bento-btn:hover,
+.bento-btn[aria-expanded="true"] { background: #f1f2ef; }
+.bento-btn:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.bento-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 252px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid #d4d7d1;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(17, 19, 18, .12);
+}
+.bento-title {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: #4a4f4b;
+}
+.bento-pop ul {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+.bento-pop a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #111312;
+  text-decoration: none;
+}
+.bento-pop a:hover,
+.bento-pop a:focus-visible { background: #f1f2ef; outline: none; }
+.bento-pop b {
+  display: grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--c);
+  color: #fff;
+  font-size: 14px;
+}`,
+js:`var btn = document.querySelector('.bento-btn');
+var pop = document.getElementById('bento-pop');
+
+function setOpen(open) {
+  pop.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+}
+
+btn.addEventListener('click', function (e) {
+  e.stopPropagation();
+  setOpen(pop.hidden);
+});
+
+// 바깥을 누르면 닫기
+document.addEventListener('click', function (e) {
+  if (!pop.contains(e.target)) setOpen(false);
+});
+
+// Esc로 닫고 버튼으로 포커스 복귀
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !pop.hidden) {
+    setOpen(false);
+    btn.focus();
+  }
+});`});
+
+/* ---------------- 03 Breadcrumb ---------------- */
+E({id:'breadcrumb', en:'Breadcrumb', ko:'브레드크럼', cat:'nav', h:340,
+desc:'사이트 안에서 현재 위치와 거쳐 온 상위 단계를 보여 주는 경로 링크입니다. 보통 페이지 위쪽에 두며, 각 단계를 눌러 바로 그 단계로 이동할 수 있습니다.',
+a11y:'nav에 aria-label을 붙이고 순서가 있는 ol로 구성합니다. 마지막 항목은 현재 페이지이므로 링크로 만들지 않고 aria-current="page"를 줍니다. 구분자 "/"는 CSS로 그려 스크린리더가 읽지 않습니다.',
+html:`<div class="crumb-demo">
+  <nav class="crumbs" aria-label="현재 위치">
+    <ol id="crumb-list">
+      <li><a href="#">홈</a></li>
+      <li><a href="#">가구</a></li>
+      <li><a href="#">의자</a></li>
+      <li><a href="#">사무용 의자</a></li>
+      <li><span aria-current="page">메시 체어 M2</span></li>
+    </ol>
+  </nav>
+
+  <div class="crumb-page">
+    <h2 id="crumb-title">메시 체어 M2</h2>
+    <p>경로의 상위 단계를 누르면 그 페이지로 이동한 것처럼 바뀝니다.</p>
+  </div>
+
+  <button type="button" class="crumb-reset" id="crumb-reset">처음 경로로 되돌리기</button>
+</div>`,
+css:`.crumb-demo { display: grid; gap: 20px; width: min(100%, 520px); }
+
+.crumbs ol {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+.crumbs li { display: flex; align-items: center; gap: 4px; }
+.crumbs li + li::before { content: "/"; color: #9aa09b; padding: 0 2px; }
+
+.crumbs a {
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #4a4f4b;
+  text-decoration: none;
+}
+.crumbs a:hover { color: #111312; background: #f1f2ef; text-decoration: underline; }
+.crumbs a:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 1px; }
+.crumbs [aria-current="page"] { padding: 2px 4px; font-weight: 600; color: #111312; }
+
+.crumb-page { padding: 20px; border: 1px solid #d4d7d1; border-radius: 10px; }
+.crumb-page h2 { margin: 0 0 4px; font-size: 20px; }
+.crumb-page p { margin: 0; font-size: 14px; color: #4a4f4b; }
+
+.crumb-reset {
+  justify-self: start;
+  padding: 6px 12px;
+  border: 1px solid #d4d7d1;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.crumb-reset:hover { border-color: #111312; }`,
+js:`var list = document.getElementById('crumb-list');
+var title = document.getElementById('crumb-title');
+var original = list.innerHTML;
+
+function bind() {
+  list.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var li = a.parentElement;
+      // 클릭한 단계 뒤의 경로를 지우고 현재 페이지로 표시
+      while (li.nextElementSibling) li.nextElementSibling.remove();
+      var current = document.createElement('span');
+      current.setAttribute('aria-current', 'page');
+      current.textContent = a.textContent;
+      li.replaceChildren(current);
+      title.textContent = a.textContent;
+    });
+  });
+}
+bind();
+
+document.getElementById('crumb-reset').addEventListener('click', function () {
+  list.innerHTML = original;
+  title.textContent = '메시 체어 M2';
+  bind();
+});`});
+
+/* ---------------- 04 Button ---------------- */
+E({id:'button', en:'Button', ko:'버튼', cat:'input', h:300,
+desc:'라벨이 붙은 도형으로, 제출·저장처럼 특정 동작을 실행할 수 있다는 것을 알려 줍니다. 화면 안에서의 우선순위에 따라 주 버튼, 보조 버튼, 텍스트 버튼, 위험 버튼으로 나눠 씁니다.',
+a11y:'링크가 아닌 동작에는 반드시 button 요소를 씁니다. 처리 중에는 aria-busy="true"로 상태를 알리고 중복 클릭을 막습니다. 키보드 포커스 링은 :focus-visible로 따로 그립니다.',
+html:`<div class="btn-row">
+  <button class="btn btn-primary" type="button">저장하기</button>
+  <button class="btn btn-secondary" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+    내려받기
+  </button>
+  <button class="btn btn-ghost" type="button">취소</button>
+  <button class="btn btn-danger" type="button">계정 삭제</button>
+  <button class="btn btn-primary" type="button" disabled>비활성</button>
+  <button class="btn btn-primary" type="button" id="pay">결제하기</button>
+  <p class="btn-caption">‘결제하기’를 누르면 처리 중 상태를 볼 수 있습니다.</p>
+</div>`,
+css:`.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 520px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 3px; }
+.btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.btn-primary { background: #111312; color: #fff; }
+.btn-primary:hover { background: #2e322f; }
+
+.btn-secondary { background: #fff; border-color: #111312; color: #111312; }
+.btn-secondary:hover { background: #f1f2ef; }
+
+.btn-ghost {
+  background: transparent;
+  color: #1f3fd1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.btn-ghost:hover { background: #eef1fd; }
+
+.btn-danger { background: #d42a1f; color: #fff; }
+.btn-danger:hover { background: #b3221a; }
+
+.btn:disabled {
+  background: #e4e6e2;
+  color: #81877f;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 처리 중 스피너 */
+.btn .spin {
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-caption { width: 100%; margin: 4px 0 0; text-align: center; font-size: 13px; color: #4a4f4b; }`,
+js:`var pay = document.getElementById('pay');
+
+pay.addEventListener('click', function () {
+  if (pay.getAttribute('aria-busy') === 'true') return;
+
+  pay.setAttribute('aria-busy', 'true');
+  pay.innerHTML = '<span class="spin" aria-hidden="true"></span>처리 중';
+
+  setTimeout(function () {
+    pay.textContent = '결제 완료';
+    setTimeout(function () {
+      pay.textContent = '결제하기';
+      pay.removeAttribute('aria-busy');
+    }, 1400);
+  }, 1600);
+});`});
+
+/* ---------------- 05 Card ---------------- */
+E({id:'card', en:'Card', ko:'카드', cat:'box', h:420,
+desc:'버튼, 텍스트, 이미지 같은 여러 정보를 담은 작은 사각형 모듈입니다. 서로 다른 콘텐츠를 나란히 보여 주는 진입점 역할을 하며, 긴 목록을 스크롤하지 않고도 여러 선택지를 보여 줄 수 있습니다.',
+a11y:'카드 하나를 article로 감싸고 제목 안에 링크를 둡니다. 저장 버튼은 aria-pressed로 켜짐/꺼짐을 전달합니다. 장식용 이미지 영역은 aria-hidden 처리합니다.',
+html:`<div class="cards">
+  <article class="card">
+    <div class="card-media m1" aria-hidden="true"></div>
+    <div class="card-body">
+      <p class="card-kicker">가이드 · 6분</p>
+      <h3 class="card-title"><a href="#">폼 오류 메시지를 쓰는 다섯 가지 원칙</a></h3>
+      <p class="card-text">무엇이 틀렸고 어떻게 고치는지를 한 문장에 담는 방법.</p>
+    </div>
+    <footer class="card-foot">
+      <time datetime="2026-09-18">2026.09.18</time>
+      <button class="save" type="button" aria-pressed="false" aria-label="저장">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+      </button>
+    </footer>
+  </article>
+
+  <article class="card">
+    <div class="card-media m2" aria-hidden="true"></div>
+    <div class="card-body">
+      <p class="card-kicker">케이스 스터디 · 11분</p>
+      <h3 class="card-title"><a href="#">결제 단계를 넷에서 셋으로 줄인 기록</a></h3>
+      <p class="card-text">이탈률이 가장 높던 배송지 화면을 어떻게 합쳤는지.</p>
+    </div>
+    <footer class="card-foot">
+      <time datetime="2026-09-02">2026.09.02</time>
+      <button class="save" type="button" aria-pressed="true" aria-label="저장">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+      </button>
+    </footer>
+  </article>
+</div>`,
+css:`.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: min(100%, 520px);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #d4d7d1;
+  border-radius: 12px;
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover { box-shadow: 0 10px 24px rgba(17, 19, 18, .1); transform: translateY(-2px); }
+
+.card-media { aspect-ratio: 16 / 9; }
+.m1 { background: repeating-linear-gradient(135deg, #111312 0 2px, #ffe14d 2px 12px); }
+.m2 { background: #1f3fd1 radial-gradient(#fff 1.4px, transparent 1.6px) 0 0 / 14px 14px; }
+
+.card-body { flex: 1; padding: 14px 16px 4px; }
+.card-kicker { margin: 0; font-size: 12px; letter-spacing: .03em; color: #4a4f4b; }
+.card-title { margin: 6px 0; font-size: 16px; line-height: 1.35; }
+.card-title a { color: #111312; text-decoration: none; }
+.card-title a:hover { text-decoration: underline; }
+.card-text { margin: 0; font-size: 14px; color: #4a4f4b; }
+
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px 10px 16px;
+  font-size: 12px;
+  color: #6b706c;
+  font-variant-numeric: tabular-nums;
+}
+.save {
+  display: grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.save:hover { background: #f1f2ef; }
+.save:focus-visible { outline: 2px solid #1f3fd1; }
+.save svg { width: 18px; height: 18px; fill: none; stroke: #111312; stroke-width: 1.8; stroke-linejoin: round; }
+.save[aria-pressed="true"] svg { fill: #111312; }`,
+js:`document.querySelectorAll('.save').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var on = btn.getAttribute('aria-pressed') === 'true';
+    btn.setAttribute('aria-pressed', String(!on));
+    btn.setAttribute('aria-label', on ? '저장' : '저장 취소');
+  });
+});`});
+
+/* ---------------- 06 Carousel ---------------- */
+E({id:'carousel', en:'Carousel', ko:'캐러셀', cat:'box', h:400,
+desc:'이미지나 카드 같은 콘텐츠 묶음을 같은 자리에서 차례로 넘겨 보는 영역입니다. 한 공간에 여러 콘텐츠를 담을 수 있다는 것이 장점이며, 자동 넘김보다는 사용자가 직접 넘기게 하는 편이 좋습니다.',
+a11y:'영역에 aria-roledescription="carousel", 슬라이드마다 "1 / 4" 같은 라벨을 붙입니다. 현재 위치는 aria-live 영역으로 읽어 주고, 이전·다음 버튼과 위치 점 모두 키보드로 조작됩니다.',
+html:`<section class="car" aria-roledescription="carousel" aria-label="이번 주 전시">
+  <div class="car-view">
+    <ul class="car-track">
+      <li class="car-slide s1" aria-roledescription="slide" aria-label="1 / 4">
+        <span class="car-no">01</span><h3>종이의 결</h3><p>성수 · 10.02 – 10.27</p>
+      </li>
+      <li class="car-slide s2" aria-roledescription="slide" aria-label="2 / 4">
+        <span class="car-no">02</span><h3>빛을 모으는 법</h3><p>을지로 · 10.05 – 11.10</p>
+      </li>
+      <li class="car-slide s3" aria-roledescription="slide" aria-label="3 / 4">
+        <span class="car-no">03</span><h3>활자 서랍</h3><p>연남 · 10.11 – 10.30</p>
+      </li>
+      <li class="car-slide s4" aria-roledescription="slide" aria-label="4 / 4">
+        <span class="car-no">04</span><h3>검은 유리</h3><p>한남 · 10.15 – 12.01</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="car-ctrl">
+    <button class="car-arrow car-prev" type="button" aria-label="이전 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="car-dots"></div>
+    <button class="car-arrow car-next" type="button" aria-label="다음 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <p class="car-status sr" aria-live="polite"></p>
+</section>`,
+css:`.car { width: min(100%, 460px); }
+.car-view { overflow: hidden; border-radius: 12px; }
+.car-track {
+  display: flex;
+  margin: 0; padding: 0;
+  list-style: none;
+  transition: transform .45s cubic-bezier(.3, .7, .2, 1);
+}
+.car-slide {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 220px;
+  padding: 24px;
+}
+.car-slide h3 { margin: 0; font-size: 28px; letter-spacing: -.02em; }
+.car-slide p { margin: 4px 0 0; font-size: 14px; opacity: .85; }
+.car-no { margin-bottom: auto; font: 600 13px/1 ui-monospace, Menlo, monospace; }
+.s1 { background: #ffe14d; color: #111312; }
+.s2 { background: #1f3fd1; color: #fff; }
+.s3 { background: #e7e9e3; color: #111312; }
+.s4 { background: #111312; color: #fff; }
+
+.car-ctrl { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.car-arrow {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  border: 1px solid #d4d7d1;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+.car-arrow:hover { border-color: #111312; }
+.car-arrow svg { width: 18px; height: 18px; fill: none; stroke: #111312; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.car-dots { display: flex; gap: 8px; }
+.car-dots button {
+  width: 8px; height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: #c9ccc6;
+  cursor: pointer;
+  transition: width .25s, background .25s;
+}
+.car-dots button[aria-current="true"] { width: 24px; background: #111312; }
+.car button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }`,
+js:`var track = document.querySelector('.car-track');
+var count = track.children.length;
+var dots = document.querySelector('.car-dots');
+var status = document.querySelector('.car-status');
+var index = 0;
+
+for (var k = 0; k < count; k++) {
+  (function (k) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', (k + 1) + '번 슬라이드로 이동');
+    dot.addEventListener('click', function () { go(k); });
+    dots.appendChild(dot);
+  })(k);
+}
+
+function go(k) {
+  index = (k + count) % count;   // 처음 ↔ 마지막 순환
+  track.style.transform = 'translateX(' + (-100 * index) + '%)';
+  Array.prototype.forEach.call(dots.children, function (d, j) {
+    d.setAttribute('aria-current', j === index ? 'true' : 'false');
+  });
+  status.textContent = count + '개 중 ' + (index + 1) + '번째 슬라이드';
+}
+
+document.querySelector('.car-prev').addEventListener('click', function () { go(index - 1); });
+document.querySelector('.car-next').addEventListener('click', function () { go(index + 1); });
+go(0);`});
+
+/* ---------------- 07 Checkbox ---------------- */
+E({id:'checkbox', en:'Checkbox', ko:'체크박스', cat:'input', h:380,
+desc:'사용자가 체크하거나 해제할 수 있는 작은 사각형입니다. 각 항목이 독립적으로 동작하므로 목록에서 여러 개를 함께 고를 수 있습니다. 폼과 설정 화면에서 흔히 씁니다.',
+a11y:'네이티브 input[type=checkbox]를 appearance:none으로 다시 그려 키보드·스크린리더 동작을 그대로 유지합니다. 그룹 이름은 fieldset과 legend로 주고, 전체 선택은 일부만 선택됐을 때 indeterminate 상태가 됩니다.',
+html:`<fieldset class="cb">
+  <legend>알림 받을 채널</legend>
+
+  <label class="cb-all">
+    <input type="checkbox" id="cb-all">
+    <span>전체 선택</span>
+  </label>
+
+  <div class="cb-list">
+    <label><input type="checkbox" class="cb-opt" checked>
+      <span>이메일<small>주 1회 요약</small></span></label>
+    <label><input type="checkbox" class="cb-opt">
+      <span>문자 메시지<small>배송 상태만</small></span></label>
+    <label><input type="checkbox" class="cb-opt" checked>
+      <span>앱 푸시<small>실시간</small></span></label>
+  </div>
+
+  <p class="cb-count" aria-live="polite"></p>
+</fieldset>`,
+css:`.cb { width: min(100%, 340px); margin: 0; padding: 0; border: 0; }
+.cb legend { margin-bottom: 8px; font-size: 17px; font-weight: 700; }
+
+.cb label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.cb-all { border-bottom: 1px solid #d4d7d1; font-weight: 600; }
+.cb-list span { display: flex; flex-direction: column; }
+.cb small { font-size: 13px; color: #6b706c; }
+
+/* 커스텀 체크박스 */
+.cb input {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-content: center;
+  width: 20px; height: 20px;
+  margin: 2px 0 0;
+  background: #fff;
+  border: 1.5px solid #111312;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cb input::before {
+  content: "";
+  width: 11px; height: 6px;
+  border: solid #fff;
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg) translate(1px, -1px);
+  opacity: 0;
+}
+.cb input:checked,
+.cb input:indeterminate { background: #111312; }
+.cb input:checked::before { opacity: 1; }
+.cb input:indeterminate::before {
+  opacity: 1;
+  width: 10px; height: 0;
+  border-width: 0 0 2px 0;
+  transform: none;
+}
+.cb input:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.cb-count { margin: 8px 0 0; font-size: 13px; color: #4a4f4b; }`,
+js:`var all = document.getElementById('cb-all');
+var opts = Array.prototype.slice.call(document.querySelectorAll('.cb-opt'));
+var count = document.querySelector('.cb-count');
+
+function sync() {
+  var n = opts.filter(function (o) { return o.checked; }).length;
+  all.checked = n === opts.length;
+  all.indeterminate = n > 0 && n < opts.length;  // 일부만 선택
+  count.textContent = opts.length + '개 중 ' + n + '개 선택됨';
+}
+
+all.addEventListener('change', function () {
+  opts.forEach(function (o) { o.checked = all.checked; });
+  sync();
+});
+opts.forEach(function (o) { o.addEventListener('change', sync); });
+sync();`});
+
+/* ---------------- 08 Comment ---------------- */
+E({id:'comment', en:'Comment', ko:'댓글', cat:'info', h:480,
+desc:'사용자가 입력한 글을 시간 순서대로 보여 주는 영역입니다. 소셜 미디어나 블로그 글 아래에서 흔히 볼 수 있으며, 글 목록과 새 글 입력 폼이 함께 놓입니다.',
+a11y:'입력창에는 화면에 보이지 않더라도 label을 연결합니다. 좋아요 버튼은 aria-pressed로 상태를 전달하고, 사용자가 입력한 글은 innerHTML이 아닌 textContent로 넣어 스크립트 삽입을 막습니다.',
+html:`<section class="cmt">
+  <h3>댓글 <span id="cmt-n">2</span></h3>
+
+  <ul class="cmt-list" id="cmt-list">
+    <li class="cmt-item">
+      <span class="av" style="background:#ffe14d">지</span>
+      <div class="cmt-body">
+        <p class="cmt-meta"><b>지원</b><time>3시간 전</time></p>
+        <p class="cmt-text">오류 메시지 예시가 특히 도움이 됐어요. 저희 팀 가이드에도 옮겨 두겠습니다.</p>
+        <button class="like" type="button" aria-pressed="false">좋아요 <span>4</span></button>
+      </div>
+    </li>
+    <li class="cmt-item">
+      <span class="av" style="background:#dfe5fb">민</span>
+      <div class="cmt-body">
+        <p class="cmt-meta"><b>민호</b><time>1시간 전</time></p>
+        <p class="cmt-text">두 번째 원칙은 모바일 앱에서도 그대로 적용되나요?</p>
+        <button class="like" type="button" aria-pressed="true">좋아요 <span>2</span></button>
+      </div>
+    </li>
+  </ul>
+
+  <form class="cmt-form" id="cmt-form">
+    <label for="cmt-input" class="sr">댓글 쓰기</label>
+    <textarea id="cmt-input" rows="2" placeholder="댓글을 남겨 주세요" required></textarea>
+    <button type="submit">등록</button>
+  </form>
+</section>`,
+css:`body { align-items: flex-start; }
+.cmt { width: min(100%, 480px); }
+.cmt h3 { margin: 0 0 8px; font-size: 17px; }
+.cmt h3 span { color: #6b706c; font-weight: 500; }
+
+.cmt-list { margin: 0; padding: 0; list-style: none; }
+.cmt-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e5e0;
+}
+.av {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+}
+.cmt-body { min-width: 0; }
+.cmt-meta { display: flex; gap: 8px; align-items: baseline; margin: 0; font-size: 14px; }
+.cmt-meta time { font-size: 12px; color: #6b706c; }
+.cmt-text { margin: 2px 0 6px; font-size: 14.5px; overflow-wrap: anywhere; }
+
+.like {
+  padding: 2px 8px;
+  border: 1px solid #d4d7d1;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+.like[aria-pressed="true"] { background: #111312; border-color: #111312; color: #fff; }
+
+.cmt-form { display: flex; gap: 8px; margin-top: 14px; }
+.cmt-form textarea {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #c9ccc6;
+  border-radius: 8px;
+  resize: vertical;
+}
+.cmt-form textarea:focus { outline: 2px solid #1f3fd1; outline-offset: -1px; border-color: transparent; }
+.cmt-form button {
+  align-self: stretch;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #111312;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }`,
+js:`var list = document.getElementById('cmt-list');
+var form = document.getElementById('cmt-form');
+var input = document.getElementById('cmt-input');
+var total = document.getElementById('cmt-n');
+
+// 좋아요 토글 (이벤트 위임)
+list.addEventListener('click', function (e) {
+  var btn = e.target.closest('.like');
+  if (!btn) return;
+  var on = btn.getAttribute('aria-pressed') === 'true';
+  var n = btn.querySelector('span');
+  btn.setAttribute('aria-pressed', String(!on));
+  n.textContent = Number(n.textContent) + (on ? -1 : 1);
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var text = input.value.trim();
+  if (!text) { input.focus(); return; }
+
+  var li = document.createElement('li');
+  li.className = 'cmt-item';
+  li.innerHTML =
+    '<span class="av" style="background:#e7e9e3">나</span>' +
+    '<div class="cmt-body"><p class="cmt-meta"><b>나</b><time>방금</time></p>' +
+    '<p class="cmt-text"></p>' +
+    '<button class="like" type="button" aria-pressed="false">좋아요 <span>0</span></button></div>';
+  li.querySelector('.cmt-text').textContent = text;  // XSS 방지
+  list.appendChild(li);
+
+  total.textContent = list.children.length;
+  input.value = '';
+});`});
+
+/* ---------------- 09 Döner Menu ---------------- */
+E({id:'doner-menu', en:'Döner Menu', ko:'되너 메뉴', cat:'nav', h:440,
+desc:'햄버거 메뉴의 변형으로, 위에서 아래로 갈수록 짧아지는 세 줄 아이콘입니다. 깔때기 모양처럼 보여 필터 묶음을 나타낼 때 씁니다.',
+a11y:'아이콘 버튼에 aria-label="필터"를 붙이고 aria-expanded, aria-controls로 패널과 연결합니다. 필터를 적용한 결과는 aria-live 영역으로 알려 줍니다.',
+html:`<div class="dn">
+  <div class="dn-bar">
+    <p><b>러닝화</b> <span id="dn-count">48개</span></p>
+    <button class="dn-btn" type="button" aria-label="필터"
+            aria-expanded="true" aria-controls="dn-panel">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="dn-panel" id="dn-panel">
+    <fieldset>
+      <legend>정렬</legend>
+      <label><input type="radio" name="sort" value="추천순" checked> 추천순</label>
+      <label><input type="radio" name="sort" value="최신순"> 최신순</label>
+      <label><input type="radio" name="sort" value="낮은 가격순"> 낮은 가격순</label>
+    </fieldset>
+    <fieldset>
+      <legend>조건</legend>
+      <label><input type="checkbox" id="dn-free"> 무료배송</label>
+      <label><input type="checkbox" id="dn-today"> 오늘 출발</label>
+    </fieldset>
+    <button class="dn-apply" type="button">적용하기</button>
+  </div>
+
+  <p class="dn-result" aria-live="polite">추천순 · 조건 없음</p>
+</div>`,
+css:`body { align-items: flex-start; }
+.dn { position: relative; width: min(100%, 420px); }
+.dn-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #d4d7d1;
+}
+.dn-bar p { margin: 0; font-size: 16px; }
+.dn-bar span { color: #6b706c; font-size: 14px; }
+
+/* 길이가 줄어드는 세 줄 */
+.dn-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 11px 9px;
+  border: 1px solid #d4d7d1;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+.dn-btn span { height: 2px; border-radius: 1px; background: #111312; }
+.dn-btn span:nth-child(1) { width: 20px; }
+.dn-btn span:nth-child(2) { width: 13px; }
+.dn-btn span:nth-child(3) { width: 6px; }
+.dn-btn[aria-expanded="true"] { background: #111312; }
+.dn-btn[aria-expanded="true"] span { background: #fff; }
+.dn-btn:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.dn-panel {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid #d4d7d1;
+  border-radius: 10px;
+  background: #fafaf8;
+}
+.dn-panel fieldset { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0; border: 0; }
+.dn-panel legend { width: 100%; margin-bottom: 6px; font-size: 12px; font-weight: 600; letter-spacing: .06em; color: #4a4f4b; }
+.dn-panel label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+.dn-panel input { accent-color: #111312; width: 16px; height: 16px; }
+.dn-apply {
+  justify-self: start;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #111312;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dn-result { margin: 12px 0 0; font-size: 13px; color: #4a4f4b; }`,
+js:`var btn = document.querySelector('.dn-btn');
+var panel = document.getElementById('dn-panel');
+var result = document.querySelector('.dn-result');
+var count = document.getElementById('dn-count');
+
+btn.addEventListener('click', function () {
+  var open = panel.hidden;
+  panel.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+});
+
+document.querySelector('.dn-apply').addEventListener('click', function () {
+  var sort = document.querySelector('input[name="sort"]:checked').value;
+  var free = document.getElementById('dn-free').checked;
+  var today = document.getElementById('dn-today').checked;
+  var n = 48 - (free ? 17 : 0) - (today ? 21 : 0);
+  var conds = [];
+  if (free) conds.push('무료배송');
+  if (today) conds.push('오늘 출발');
+
+  count.textContent = n + '개';
+  result.textContent = sort + ' · ' + (conds.length ? conds.join(', ') : '조건 없음');
+  panel.hidden = true;
+  btn.setAttribute('aria-expanded', 'false');
+  btn.focus();
+});`});
+
+/* ---------------- 10 Dropdown ---------------- */
+E({id:'dropdown', en:'Dropdown', ko:'드롭다운', cat:'input', h:400,
+desc:'버튼을 누르면 목록이 아래로 펼쳐지고 그중 하나를 고르는 요소입니다. 선택지가 숨겨져 있어 호불호가 갈리는 요소이므로, 항목이 적다면 라디오 버튼이 더 나을 수 있습니다.',
+a11y:'버튼에 aria-haspopup="listbox"와 aria-expanded를, 목록에 role="listbox"와 option을 줍니다. 방향키로 이동하고 Enter로 고르며 Esc로 닫습니다. 현재 항목은 aria-activedescendant로 알립니다.',
+html:`<div class="dd">
+  <span class="dd-label" id="dd-label">배송 국가</span>
+
+  <button class="dd-btn" type="button" id="dd-btn"
+          aria-haspopup="listbox" aria-expanded="false"
+          aria-labelledby="dd-label dd-btn">
+    <span id="dd-value">대한민국</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+
+  <ul class="dd-list" role="listbox" tabindex="-1" aria-labelledby="dd-label" hidden>
+    <li role="option" aria-selected="true">대한민국</li>
+    <li role="option" aria-selected="false">일본</li>
+    <li role="option" aria-selected="false">대만</li>
+    <li role="option" aria-selected="false">싱가포르</li>
+    <li role="option" aria-selected="false">독일</li>
+    <li role="option" aria-selected="false">캐나다</li>
+  </ul>
+  <p class="dd-hint">방향키, Enter, Esc로도 조작할 수 있습니다.</p>
+</div>`,
+css:`body { align-items: flex-start; padding-top: 40px; }
+.dd { position: relative; width: min(100%, 300px); }
+.dd-label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+
+.dd-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1.5px solid #111312;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.dd-btn svg { width: 18px; height: 18px; fill: none; stroke: #111312; stroke-width: 2; stroke-linecap: round; transition: transform .2s; }
+.dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.dd-btn:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.dd-list {
+  position: absolute;
+  top: 80px; left: 0; right: 0;
+  z-index: 2;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d4d7d1;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(17, 19, 18, .12);
+}
+.dd-list:focus { outline: none; }
+.dd-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.dd-list li.active { background: #f1f2ef; }
+.dd-list li[aria-selected="true"] { font-weight: 600; }
+.dd-list li[aria-selected="true"]::after { content: "✓"; }
+.dd-hint { margin: 10px 0 0; font-size: 12.5px; color: #6b706c; }`,
+js:`var btn = document.getElementById('dd-btn');
+var list = document.querySelector('.dd-list');
+var value = document.getElementById('dd-value');
+var opts = Array.prototype.slice.call(list.children);
+var active = 0;
+
+opts.forEach(function (o, i) {
+  o.id = 'dd-opt-' + i;
+  o.addEventListener('click', function () { choose(i); });
+  o.addEventListener('mousemove', function () { mark(i); });
+});
+
+function selectedIndex() {
+  return opts.findIndex(function (o) { return o.getAttribute('aria-selected') === 'true'; });
+}
+function open() {
+  list.hidden = false;
+  btn.setAttribute('aria-expanded', 'true');
+  mark(selectedIndex());
+  list.focus();
+}
+function close(focusBtn) {
+  list.hidden = true;
+  btn.setAttribute('aria-expanded', 'false');
+  if (focusBtn) btn.focus();
+}
+function mark(i) {
+  active = i;
+  opts.forEach(function (o, j) { o.classList.toggle('active', j === i); });
+  list.setAttribute('aria-activedescendant', opts[i].id);
+  opts[i].scrollIntoView({ block: 'nearest' });
+}
+function choose(i) {
+  opts.forEach(function (o, j) { o.setAttribute('aria-selected', String(j === i)); });
+  value.textContent = opts[i].textContent;
+  close(true);
+}
+
+btn.addEventListener('click', function () { list.hidden ? open() : close(true); });
+
+list.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowDown') { e.preventDefault(); mark(Math.min(active + 1, opts.length - 1)); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); mark(Math.max(active - 1, 0)); }
+  else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(active); }
+  else if (e.key === 'Escape' || e.key === 'Tab') { close(e.key === 'Escape'); }
+});
+
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.dd') && !list.hidden) close(false);
+});`});
+
+/* ---------------- 11 Feed ---------------- */
+E({id:'feed', en:'Feed', ko:'피드', cat:'info', h:500,
+desc:'사용자 활동을 시간 순서대로 이어서 보여 주는 목록입니다. 짧은 글부터 이미지, 영상까지 내용이 다양하며, 새 글 알림과 더 보기 동작이 함께 붙습니다.',
+a11y:'목록에 role="feed"와 aria-busy를 써서 불러오는 동안의 상태를 알립니다. 게시물마다 article과 aria-labelledby로 작성자를 연결하고, 새 글 버튼은 개수를 텍스트로 포함합니다.',
+html:`<div class="fd">
+  <div class="fd-head">
+    <h3>팔로잉</h3>
+    <button class="fd-new" type="button" id="fd-new">새 글 2개 보기</button>
+  </div>
+
+  <div class="fd-list" role="feed" aria-busy="false" id="fd-list">
+    <article class="post" aria-labelledby="p1">
+      <span class="av">하</span>
+      <div>
+        <p class="post-meta"><b id="p1">하린</b> @harin.dev · 12분</p>
+        <p>다크 모드 토큰을 정리하다가 회색만 열네 개라는 걸 알게 됐다.</p>
+        <p class="post-act">답글 3 · 공감 28</p>
+      </div>
+    </article>
+    <article class="post" aria-labelledby="p2">
+      <span class="av">도</span>
+      <div>
+        <p class="post-meta"><b id="p2">도윤</b> @doyoon · 40분</p>
+        <p>오늘 배운 것: :focus-visible은 마우스 클릭에는 포커스 링을 그리지 않는다.</p>
+        <p class="post-act">답글 1 · 공감 54</p>
+      </div>
+    </article>
+    <article class="post" aria-labelledby="p3">
+      <span class="av">서</span>
+      <div>
+        <p class="post-meta"><b id="p3">서아</b> @seoa_ux · 1시간</p>
+        <p>사용성 테스트 5명 중 4명이 햄버거 메뉴를 찾지 못했다. 탭 바로 바꿔 본다.</p>
+        <p class="post-act">답글 9 · 공감 112</p>
+      </div>
+    </article>
+  </div>
+
+  <button class="fd-more" type="button" id="fd-more">이전 글 더 보기</button>
+</div>`,
+css:`body { align-items: flex-start; }
+.fd { width: min(100%, 460px); }
+.fd-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.fd-head h3 { margin: 0; font-size: 18px; }
+.fd-new {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #1f3fd1;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fd-new[hidden] { display: none; }
+
+.post {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e5e0;
+}
+.post.is-new { animation: flash 1.2s ease; }
+@keyframes flash { from { background: #fff6c2; } to { background: transparent; } }
+.post p { margin: 0; font-size: 14.5px; }
+.post-meta { font-size: 13px !important; color: #6b706c; margin-bottom: 2px !important; }
+.post-meta b { color: #111312; }
+.post-act { margin-top: 6px !important; font-size: 12.5px !important; color: #6b706c; }
+.av {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #e7e9e3;
+  font-size: 14px;
+  font-weight: 700;
+}
+.fd-more {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #d4d7d1;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.fd-more:hover { border-color: #111312; }
+.fd button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }`,
+js:`var list = document.getElementById('fd-list');
+var newer = [
+  ['민재', '@minjae', '방금', '스켈레톤 로더를 실제 레이아웃과 똑같이 맞추니 체감 속도가 확실히 달라졌다.'],
+  ['유나', '@yuna.k', '방금', '브레드크럼의 마지막 항목은 링크가 아니어야 한다는 걸 코드 리뷰에서 배웠다.']
+];
+var older = [
+  ['태오', '@taeo', '3시간', '토스트는 4초, 오류 토스트는 사용자가 닫을 때까지 남겨 두기로 했다.'],
+  ['나래', '@narae', '5시간', '드롭다운 대신 라디오 버튼 세 개로 바꾸니 클릭 수가 절반이 됐다.']
+];
+var uid = 10;
+
+function post(d, isNew) {
+  var a = document.createElement('article');
+  var id = 'p' + (uid++);
+  a.className = 'post' + (isNew ? ' is-new' : '');
+  a.setAttribute('aria-labelledby', id);
+  a.innerHTML = '<span class="av"></span><div><p class="post-meta"><b></b></p><p class="txt"></p><p class="post-act">답글 0 · 공감 0</p></div>';
+  a.querySelector('.av').textContent = d[0].charAt(0);
+  var b = a.querySelector('b');
+  b.id = id;
+  b.textContent = d[0];
+  b.after(' ' + d[1] + ' · ' + d[2]);
+  a.querySelector('.txt').textContent = d[3];
+  return a;
+}
+
+document.getElementById('fd-new').addEventListener('click', function () {
+  newer.slice().reverse().forEach(function (d) { list.prepend(post(d, true)); });
+  this.hidden = true;
+});
+
+document.getElementById('fd-more').addEventListener('click', function () {
+  var btn = this;
+  list.setAttribute('aria-busy', 'true');
+  btn.textContent = '불러오는 중…';
+  setTimeout(function () {
+    older.forEach(function (d) { list.appendChild(post(d, false)); });
+    list.setAttribute('aria-busy', 'false');
+    btn.textContent = '더 이상 글이 없습니다';
+    btn.disabled = true;
+  }, 700);
+});`});
+
+/* ---------------- 12 Form ---------------- */
+E({id:'form', en:'Form', ko:'폼', cat:'input', h:600,
+desc:'서로 관련된 정보 묶음을 한 번에 입력하고 제출하게 하는 요소입니다. 온라인 쇼핑의 배송지 입력 화면처럼 여러 입력 필드, 선택 상자, 제출 버튼이 함께 구성됩니다.',
+a11y:'모든 입력에 label을 연결하고, 오류 문장은 aria-describedby로 이어 스크린리더가 함께 읽게 합니다. 오류가 있으면 aria-invalid를 켜고 첫 번째 오류 필드로 포커스를 옮깁니다. 브라우저 기본 검증 풍선은 novalidate로 끕니다.',
+html:`<form class="fm" id="fm" novalidate>
+  <h3>배송지 입력</h3>
+
+  <div class="fm-row">
+    <div class="fm-field">
+      <label for="f-name">받는 분</label>
+      <input id="f-name" required autocomplete="name">
+      <p class="fm-err" id="f-name-err"></p>
+    </div>
+    <div class="fm-field">
+      <label for="f-tel">연락처</label>
+      <input id="f-tel" type="tel" required placeholder="010-0000-0000"
+             pattern="01[0-9]-?[0-9]{3,4}-?[0-9]{4}" autocomplete="tel">
+      <p class="fm-err" id="f-tel-err"></p>
+    </div>
+  </div>
+
+  <div class="fm-field fm-zip">
+    <label for="f-zip">우편번호</label>
+    <input id="f-zip" inputmode="numeric" required pattern="[0-9]{5}" placeholder="숫자 5자리">
+    <p class="fm-err" id="f-zip-err"></p>
+  </div>
+
+  <div class="fm-field">
+    <label for="f-addr">주소</label>
+    <input id="f-addr" required autocomplete="street-address" placeholder="도로명 주소">
+    <p class="fm-err" id="f-addr-err"></p>
+  </div>
+
+  <div class="fm-field">
+    <label for="f-memo">배송 메모</label>
+    <select id="f-memo">
+      <option>문 앞에 놓아 주세요</option>
+      <option>경비실에 맡겨 주세요</option>
+      <option>배송 전에 연락 주세요</option>
+    </select>
+  </div>
+
+  <button type="submit">배송지 저장</button>
+  <p class="fm-done" id="fm-done" role="status"></p>
+</form>`,
+css:`body { align-items: flex-start; }
+.fm { display: grid; gap: 14px; width: min(100%, 460px); }
+.fm h3 { margin: 0 0 4px; font-size: 19px; }
+.fm-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+.fm-field { display: grid; gap: 6px; min-width: 0; }
+.fm-zip { max-width: 180px; }
+.fm label { font-size: 14px; font-weight: 600; }
+
+.fm input,
+.fm select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: #fff;
+  border: 1.5px solid #c9ccc6;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.fm input:focus,
+.fm select:focus { outline: none; border-color: #111312; box-shadow: 0 0 0 3px rgba(31, 63, 209, .2); }
+.fm input[aria-invalid="true"] { border-color: #d42a1f; background: #fff7f6; }
+
+.fm-err { min-height: 0; margin: 0; font-size: 13px; color: #c0241a; }
+.fm-err:empty { display: none; }
+
+.fm button {
+  height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: #111312;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fm button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 3px; }
+.fm-done { margin: 0; font-size: 14px; color: #127a46; font-weight: 600; }`,
+js:`var form = document.getElementById('fm');
+var done = document.getElementById('fm-done');
+var messages = {
+  'f-name': '받는 분 이름을 입력해 주세요.',
+  'f-tel':  '010-1234-5678 형식으로 입력해 주세요.',
+  'f-zip':  '우편번호는 숫자 5자리입니다.',
+  'f-addr': '도로명 주소를 입력해 주세요.'
+};
+var fields = Array.prototype.slice.call(form.querySelectorAll('[required]'));
+
+fields.forEach(function (input) {
+  input.setAttribute('aria-describedby', input.id + '-err');
+  // 한 번 오류가 난 필드는 입력할 때마다 다시 확인
+  input.addEventListener('input', function () {
+    if (input.getAttribute('aria-invalid') === 'true') check(input);
+  });
+  input.addEventListener('blur', function () { if (input.value) check(input); });
+});
+
+function check(input) {
+  var ok = input.checkValidity();
+  input.setAttribute('aria-invalid', String(!ok));
+  document.getElementById(input.id + '-err').textContent = ok ? '' : messages[input.id];
+  return ok;
+}
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var firstBad = null;
+  fields.forEach(function (input) {
+    if (!check(input) && !firstBad) firstBad = input;
+  });
+  if (firstBad) {
+    done.textContent = '';
+    firstBad.focus();
+    return;
+  }
+  done.textContent = '배송지를 저장했습니다.';
+});`});
+
+/* ---------------- 13 Hamburger Menu ---------------- */
+E({id:'hamburger-menu', en:'Hamburger Menu', ko:'햄버거 메뉴', cat:'nav', h:440,
+desc:'가로선 세 줄이 햄버거처럼 보이는 아이콘으로, 목록형 메뉴를 나타냅니다. 보통 앱의 왼쪽 위에 놓이며 누르면 내비게이션 링크가 담긴 서랍이 열립니다.',
+a11y:'버튼의 aria-expanded와 aria-label을 열림 상태에 맞춰 "메뉴 열기/닫기"로 바꿉니다. 닫힌 서랍은 visibility:hidden으로 탭 이동에서 빠지고, Esc나 배경 클릭으로 닫힙니다.',
+html:`<div class="hb-app">
+  <header class="hb-head">
+    <button class="hb-btn" type="button" aria-expanded="false"
+            aria-controls="hb-nav" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+    <b>동네책방</b>
+    <span class="hb-cart">장바구니 2</span>
+  </header>
+
+  <nav class="hb-nav" id="hb-nav" aria-label="주 메뉴">
+    <ul>
+      <li><a href="#" aria-current="page">신간</a></li>
+      <li><a href="#">베스트셀러</a></li>
+      <li><a href="#">작가 인터뷰</a></li>
+      <li><a href="#">북클럽</a></li>
+      <li><a href="#">매장 안내</a></li>
+    </ul>
+  </nav>
+  <div class="hb-scrim"></div>
+
+  <main class="hb-main">
+    <h2>이번 주 신간</h2>
+    <p>왼쪽 위 세 줄 아이콘을 누르면 메뉴가 열립니다.</p>
+    <div class="hb-ph"></div>
+    <div class="hb-ph short"></div>
+  </main>
+</div>`,
+css:`body { display: block; padding: 0; }
+.hb-app { position: relative; height: 100vh; overflow: hidden; background: #fff; }
+
+.hb-head {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  padding: 0 12px;
+  background: #fff;
+  border-bottom: 1px solid #d4d7d1;
+}
+.hb-head b { font-size: 17px; }
+.hb-cart { margin-left: auto; font-size: 13px; color: #4a4f4b; }
+
+/* 세 줄 → X */
+.hb-btn {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.hb-btn:hover { background: #f1f2ef; }
+.hb-btn:focus-visible { outline: 2px solid #1f3fd1; }
+.hb-btn span {
+  display: block;
+  width: 22px; height: 2px;
+  background: #111312;
+  transition: transform .25s, opacity .2s;
+}
+.hb-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hb-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hb-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.hb-nav {
+  position: absolute;
+  top: 56px; bottom: 0; left: 0;
+  z-index: 2;
+  width: 240px;
+  padding: 12px;
+  background: #fff;
+  border-right: 1px solid #d4d7d1;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform .28s ease, visibility 0s linear .28s;
+}
+.hb-app.open .hb-nav { transform: none; visibility: visible; transition: transform .28s ease; }
+.hb-nav ul { margin: 0; padding: 0; list-style: none; }
+.hb-nav a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #111312;
+  font-size: 16px;
+  text-decoration: none;
+}
+.hb-nav a:hover { background: #f1f2ef; }
+.hb-nav a[aria-current="page"] { font-weight: 700; background: #ffe14d; }
+
+.hb-scrim {
+  position: absolute;
+  inset: 56px 0 0;
+  z-index: 1;
+  background: rgba(17, 19, 18, .35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .28s;
+}
+.hb-app.open .hb-scrim { opacity: 1; pointer-events: auto; }
+
+.hb-main { padding: 20px; }
+.hb-main h2 { margin: 0 0 4px; font-size: 22px; }
+.hb-main p { margin: 0 0 16px; color: #4a4f4b; }
+.hb-ph { height: 90px; margin-bottom: 12px; border-radius: 10px; background: #f1f2ef; }
+.hb-ph.short { width: 60%; height: 40px; }`,
+js:`var app = document.querySelector('.hb-app');
+var btn = document.querySelector('.hb-btn');
+
+function setOpen(open) {
+  app.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', String(open));
+  btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+}
+
+btn.addEventListener('click', function () {
+  setOpen(!app.classList.contains('open'));
+});
+document.querySelector('.hb-scrim').addEventListener('click', function () { setOpen(false); });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && app.classList.contains('open')) { setOpen(false); btn.focus(); }
+});
+
+document.querySelectorAll('.hb-nav a').forEach(function (a) {
+  a.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector('.hb-nav [aria-current]').removeAttribute('aria-current');
+    a.setAttribute('aria-current', 'page');
+    document.querySelector('.hb-main h2').textContent = a.textContent;
+    setOpen(false);
+  });
+});`});
+
+/* ---------------- 14 Icon ---------------- */
+E({id:'icon', en:'Icon', ko:'아이콘', cat:'info', h:440,
+desc:'다양한 의미를 사용자에게 전달하는 작은 그림입니다. 콘텐츠를 더 잘 설명하거나 특정 동작을 실행하는 데 쓰입니다. 아래 아이콘은 24px 격자에 선 두께를 맞춰 직접 그린 SVG입니다.',
+a11y:'아이콘 옆에 보이는 텍스트가 있으면 svg에 aria-hidden="true"를 줍니다. 아이콘만 있는 버튼이라면 aria-label이 반드시 필요합니다. 선 색은 currentColor로 지정해 글자색을 그대로 따릅니다.',
+html:`<div class="ic">
+  <div class="ic-tools" role="group" aria-label="아이콘 크기">
+    <button type="button" data-size="20">20</button>
+    <button type="button" data-size="24" aria-pressed="true">24</button>
+    <button type="button" data-size="32">32</button>
+  </div>
+
+  <ul class="ic-grid">
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><span>home</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>search</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span>bell</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg><span>heart</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg><span>trash</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg><span>edit</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg><span>download</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg><span>share</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>lock</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span>calendar</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7l9 6 9-6"/></svg><span>mail</span></button></li>
+    <li><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span>pin</span></button></li>
+  </ul>
+  <p class="ic-status" aria-live="polite">아이콘을 누르면 이름을 복사합니다.</p>
+</div>`,
+css:`.ic { --s: 24px; width: min(100%, 460px); }
+.ic-tools { display: inline-flex; margin-bottom: 14px; border: 1px solid #d4d7d1; border-radius: 6px; overflow: hidden; }
+.ic-tools button {
+  padding: 5px 12px;
+  border: 0;
+  background: #fff;
+  font: 500 12px ui-monospace, Menlo, monospace;
+  cursor: pointer;
+}
+.ic-tools button + button { border-left: 1px solid #d4d7d1; }
+.ic-tools button[aria-pressed="true"] { background: #111312; color: #fff; }
+
+.ic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 0; padding: 0;
+  list-style: none;
+}
+.ic-grid button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 6px 10px;
+  border: 1px solid #e3e5e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #111312;
+  cursor: pointer;
+}
+.ic-grid button:hover { border-color: #111312; }
+.ic-grid button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 1px; }
+.ic-grid svg {
+  width: var(--s); height: var(--s);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ic-grid span { font: 12px ui-monospace, Menlo, monospace; color: #4a4f4b; }
+.ic-status { margin: 12px 0 0; font-size: 13px; color: #4a4f4b; }`,
+js:`var root = document.querySelector('.ic');
+var status = document.querySelector('.ic-status');
+
+document.querySelectorAll('.ic-tools button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    root.style.setProperty('--s', b.dataset.size + 'px');
+    document.querySelectorAll('.ic-tools button').forEach(function (x) {
+      x.setAttribute('aria-pressed', String(x === b));
+    });
+  });
+});
+
+document.querySelectorAll('.ic-grid button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var name = b.querySelector('span').textContent;
+    var done = function () { status.textContent = '‘' + name + '’ 이름을 복사했습니다.'; };
+    var fail = function () { status.textContent = '선택한 아이콘: ' + name; };
+    if (navigator.clipboard) navigator.clipboard.writeText(name).then(done, fail);
+    else fail();
+  });
+});`});
+
+/* ---------------- 15 Input Field ---------------- */
+E({id:'input-field', en:'Input Field', ko:'입력 필드', cat:'input', h:480,
+desc:'사용자가 시스템에 내용을 입력하는 칸입니다. 폼 안에서만 쓰이는 것이 아니라 검색창도 입력 필드입니다. 라벨, 도움말, 오류, 글자 수 같은 상태를 함께 설계해야 합니다.',
+a11y:'label의 for로 입력과 연결하고, 도움말과 오류 문장은 aria-describedby로 이어 둡니다. 오류일 때 aria-invalid를 켭니다. 비밀번호 보기 버튼은 aria-pressed로 상태를 알립니다.',
+html:`<div class="tf">
+  <div class="tf-field">
+    <label for="tf-mail">이메일</label>
+    <input id="tf-mail" type="email" value="hana@studio"
+           placeholder="name@company.kr" aria-describedby="tf-mail-help">
+    <p class="tf-help" id="tf-mail-help">로그인과 영수증 발송에 사용합니다.</p>
+  </div>
+
+  <div class="tf-field">
+    <label for="tf-bio">한 줄 소개 <span class="tf-count" id="tf-count">0 / 60</span></label>
+    <textarea id="tf-bio" rows="2" maxlength="60"
+              aria-describedby="tf-count">인터페이스의 작은 상태를 좋아하는 프론트엔드 개발자</textarea>
+  </div>
+
+  <div class="tf-field">
+    <label for="tf-pw">비밀번호</label>
+    <div class="tf-pw">
+      <input id="tf-pw" type="password" value="sample-pass" autocomplete="new-password">
+      <button type="button" aria-pressed="false" aria-controls="tf-pw">보기</button>
+    </div>
+  </div>
+</div>`,
+css:`.tf { display: grid; gap: 18px; width: min(100%, 380px); }
+.tf-field { display: grid; gap: 6px; }
+.tf label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+.tf-count { font-weight: 400; font-size: 12.5px; color: #6b706c; font-variant-numeric: tabular-nums; }
+
+.tf input,
+.tf textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid #c9ccc6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 15px;
+  resize: vertical;
+}
+.tf input:hover,
+.tf textarea:hover { border-color: #8d928b; }
+.tf input:focus,
+.tf textarea:focus { outline: none; border-color: #111312; box-shadow: 0 0 0 3px rgba(31, 63, 209, .2); }
+
+.tf-help { margin: 0; font-size: 13px; color: #6b706c; }
+.tf-field.error input { border-color: #d42a1f; background: #fff7f6; }
+.tf-field.error .tf-help { color: #c0241a; }
+
+.tf-pw { position: relative; }
+.tf-pw input { padding-right: 64px; }
+.tf-pw button {
+  position: absolute;
+  right: 6px; top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #f1f2ef;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.tf-pw button:focus-visible { outline: 2px solid #1f3fd1; }`,
+js:`var mail = document.getElementById('tf-mail');
+var help = document.getElementById('tf-mail-help');
+var defaultHelp = help.textContent;
+
+function validateMail() {
+  var bad = mail.value !== '' && !mail.validity.valid || (mail.value && mail.value.indexOf('.') < 0);
+  mail.closest('.tf-field').classList.toggle('error', !!bad);
+  mail.setAttribute('aria-invalid', String(!!bad));
+  help.textContent = bad ? '이메일 형식이 아닙니다. @ 뒤에 도메인 전체(예: studio.kr)를 입력해 주세요.' : defaultHelp;
+}
+mail.addEventListener('input', validateMail);
+validateMail();
+
+var bio = document.getElementById('tf-bio');
+var count = document.getElementById('tf-count');
+function updateCount() { count.textContent = bio.value.length + ' / ' + bio.maxLength; }
+bio.addEventListener('input', updateCount);
+updateCount();
+
+var pw = document.getElementById('tf-pw');
+var toggle = document.querySelector('.tf-pw button');
+toggle.addEventListener('click', function () {
+  var show = pw.type === 'password';
+  pw.type = show ? 'text' : 'password';
+  toggle.textContent = show ? '숨기기' : '보기';
+  toggle.setAttribute('aria-pressed', String(show));
+});`});
+
+/* ---------------- 16 Kebab Menu ---------------- */
+E({id:'kebab-menu', en:'Kebab Menu', ko:'케밥 메뉴', cat:'nav', h:400,
+desc:'세로로 놓인 점 세 개 아이콘입니다. 목록의 각 행처럼 개별 항목에 딸린 옵션 묶음을 나타내며, 누르면 이름 바꾸기, 공유, 삭제 같은 동작이 나타납니다.',
+a11y:'버튼에 aria-haspopup="menu"와 항목 이름이 들어간 aria-label을 줍니다. 메뉴는 role="menu", 항목은 role="menuitem"이며 열리면 첫 항목으로 포커스를 옮기고 방향키로 이동합니다.',
+html:`<div class="kb">
+  <h3>최근 파일</h3>
+  <ul class="kb-list" id="kb-list">
+    <li><span class="kb-type">PDF</span><span class="kb-name">2026_브랜드가이드.pdf</span><span class="kb-size">2.4 MB</span>
+      <button class="kb-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="2026_브랜드가이드.pdf 옵션"><i></i><i></i><i></i></button></li>
+    <li><span class="kb-type">DOC</span><span class="kb-name">사용자인터뷰_정리.docx</span><span class="kb-size">380 KB</span>
+      <button class="kb-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="사용자인터뷰_정리.docx 옵션"><i></i><i></i><i></i></button></li>
+    <li><span class="kb-type">IMG</span><span class="kb-name">대시보드_시안_v3.png</span><span class="kb-size">1.2 MB</span>
+      <button class="kb-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="대시보드_시안_v3.png 옵션"><i></i><i></i><i></i></button></li>
+  </ul>
+
+  <ul class="kb-menu" id="kb-menu" role="menu" hidden>
+    <li role="none"><button role="menuitem" type="button" data-act="rename">이름 바꾸기</button></li>
+    <li role="none"><button role="menuitem" type="button" data-act="share">공유 링크 복사</button></li>
+    <li role="none"><button role="menuitem" type="button" data-act="delete" class="danger">삭제</button></li>
+  </ul>
+  <p class="kb-status" aria-live="polite"></p>
+</div>`,
+css:`body { align-items: flex-start; }
+.kb { position: relative; width: min(100%, 460px); }
+.kb h3 { margin: 0 0 8px; font-size: 17px; }
+.kb-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid #d4d7d1; }
+.kb-list li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto 36px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e3e5e0;
+}
+.kb-type {
+  padding: 3px 0;
+  border: 1px solid #111312;
+  border-radius: 4px;
+  font: 600 10px ui-monospace, Menlo, monospace;
+  text-align: center;
+}
+.kb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14.5px; }
+.kb-size { font-size: 12.5px; color: #6b706c; font-variant-numeric: tabular-nums; }
+
+/* 세로 점 세 개 */
+.kb-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 36px; height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.kb-btn i { width: 4px; height: 4px; border-radius: 50%; background: #111312; }
+.kb-btn:hover,
+.kb-btn[aria-expanded="true"] { background: #f1f2ef; }
+.kb-btn:focus-visible { outline: 2px solid #1f3fd1; }
+
+.kb-menu {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  min-width: 160px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d4d7d1;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(17, 19, 18, .14);
+}
+.kb-menu button {
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.kb-menu button:hover,
+.kb-menu button:focus { outline: none; background: #f1f2ef; }
+.kb-menu .danger { color: #c0241a; }
+.kb-status { min-height: 1.5em; margin: 10px 0 0; font-size: 13px; color: #4a4f4b; }`,
+js:`var menu = document.getElementById('kb-menu');
+var status = document.querySelector('.kb-status');
+var items = Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]'));
+var owner = null;
+
+function openMenu(btn, focus) {
+  if (owner) owner.setAttribute('aria-expanded', 'false');
+  owner = btn;
+  btn.setAttribute('aria-expanded', 'true');
+  var row = btn.closest('li');
+  menu.style.top = (row.offsetTop + row.offsetHeight - 6) + 'px';
+  menu.hidden = false;
+  if (focus) items[0].focus();
+}
+function closeMenu(focusOwner) {
+  menu.hidden = true;
+  if (owner) {
+    owner.setAttribute('aria-expanded', 'false');
+    if (focusOwner) owner.focus();
+  }
+  owner = null;
+}
+
+document.getElementById('kb-list').addEventListener('click', function (e) {
+  var btn = e.target.closest('.kb-btn');
+  if (!btn) return;
+  e.stopPropagation();
+  owner === btn ? closeMenu(true) : openMenu(btn, true);
+});
+
+menu.addEventListener('click', function (e) {
+  var item = e.target.closest('[data-act]');
+  if (!item || !owner) return;
+  var row = owner.closest('li');
+  var name = row.querySelector('.kb-name').textContent;
+  var act = item.dataset.act;
+  if (act === 'rename') status.textContent = '‘' + name + '’ 이름을 바꿀 수 있습니다.';
+  if (act === 'share') status.textContent = '‘' + name + '’ 공유 링크를 복사했습니다.';
+  if (act === 'delete') { status.textContent = '‘' + name + '’ 파일을 삭제했습니다.'; closeMenu(false); row.remove(); return; }
+  closeMenu(true);
+});
+
+menu.addEventListener('keydown', function (e) {
+  var i = items.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  if (e.key === 'Escape') closeMenu(true);
+});
+document.addEventListener('click', function (e) { if (!menu.contains(e.target)) closeMenu(false); });
+
+// 미리보기용: 첫 행의 메뉴를 열어 둔 상태로 시작
+openMenu(document.querySelector('.kb-btn'), false);`});
+
+/* ---------------- 17 Loader ---------------- */
+E({id:'loader', en:'Loader', ko:'로더', cat:'info', h:420,
+desc:'시스템이 뒤에서 작업을 처리하고 있으니 잠시 기다리라고 알려 주는 요소입니다. 형태가 매우 다양하며, 진행률을 알 수 있다면 확정형 바를, 알 수 없다면 회전형이나 스켈레톤을 씁니다.',
+a11y:'회전형 로더에는 role="status"와 읽을 수 있는 텍스트를, 진행 바에는 role="progressbar"와 aria-valuenow를 줍니다. prefers-reduced-motion 설정에서는 회전 속도를 크게 늦춥니다.',
+html:`<div class="ld">
+  <figure>
+    <div class="ld-ring" role="status"><span class="sr">불러오는 중</span></div>
+    <figcaption>회전형</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ld-dots" role="status"><i></i><i></i><i></i><span class="sr">불러오는 중</span></div>
+    <figcaption>점 세 개</figcaption>
+  </figure>
+
+  <figure class="wide">
+    <div class="ld-bar" role="progressbar" aria-label="업로드 진행률"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    <figcaption>확정형 진행 바 <output id="ld-pct">0%</output></figcaption>
+  </figure>
+
+  <figure class="wide">
+    <div class="ld-skel" aria-hidden="true">
+      <i class="c"></i>
+      <div><i></i><i class="s"></i></div>
+    </div>
+    <figcaption>스켈레톤</figcaption>
+  </figure>
+</div>`,
+css:`.ld {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 460px);
+}
+.ld figure {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  min-height: 110px;
+  margin: 0;
+  padding: 20px 16px 14px;
+  border: 1px solid #e3e5e0;
+  border-radius: 10px;
+}
+.ld .wide { grid-column: 1 / -1; place-items: stretch; }
+.ld figcaption { display: flex; justify-content: space-between; font-size: 12.5px; color: #4a4f4b; }
+.ld output { font: 600 12.5px ui-monospace, Menlo, monospace; color: #111312; }
+
+.ld-ring {
+  width: 34px; height: 34px;
+  border: 3px solid #e3e5e0;
+  border-top-color: #111312;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ld-dots { display: flex; gap: 6px; }
+.ld-dots i {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #111312;
+  animation: bounce 1s ease-in-out infinite;
+}
+.ld-dots i:nth-child(2) { animation-delay: .15s; }
+.ld-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); opacity: .35; } 40% { transform: translateY(-8px); opacity: 1; } }
+
+.ld-bar { height: 8px; border-radius: 4px; background: #e3e5e0; overflow: hidden; }
+.ld-bar span { display: block; height: 100%; width: 0; background: #1f3fd1; transition: width .2s linear; }
+
+.ld-skel { display: flex; gap: 12px; align-items: center; }
+.ld-skel div { flex: 1; display: grid; gap: 8px; }
+.ld-skel i {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #eceee9 0%, #f8f9f6 50%, #eceee9 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+.ld-skel i.c { flex: none; width: 40px; height: 40px; border-radius: 50%; }
+.ld-skel i.s { width: 60%; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-ring { animation-duration: 3s; }
+  .ld-dots i, .ld-skel i { animation: none; }
+}`,
+js:`// 확정형 진행 바: 0 → 100%를 반복해서 보여 줍니다
+var bar = document.querySelector('.ld-bar');
+var fill = bar.querySelector('span');
+var out = document.getElementById('ld-pct');
+var pct = 0;
+
+setInterval(function () {
+  pct = pct >= 100 ? 0 : Math.min(100, pct + Math.round(Math.random() * 9 + 2));
+  fill.style.width = pct + '%';
+  bar.setAttribute('aria-valuenow', pct);
+  out.textContent = pct + '%';
+}, 260);`});
+
+/* ---------------- 18 Meatballs Menu ---------------- */
+E({id:'meatballs-menu', en:'Meatballs Menu', ko:'미트볼 메뉴', cat:'nav', h:420,
+desc:'가로로 놓인 점 세 개 아이콘으로, 더 많은 옵션이 숨어 있다는 표시입니다. 카드나 게시물의 오른쪽 위에 두고 누르면 고정하기, 링크 복사 같은 추가 동작이 나타납니다.',
+a11y:'버튼은 aria-label="더 보기"와 aria-haspopup="menu"를 갖습니다. 메뉴 항목은 role="menuitem"이고, 상태가 바뀌는 "고정하기"는 role="menuitemcheckbox"와 aria-checked로 표현합니다.',
+html:`<article class="mb-card">
+  <header>
+    <span class="av">수</span>
+    <div><b>수진</b><small>디자인팀 · 어제</small></div>
+    <span class="mb-pin" id="mb-pin" hidden>고정됨</span>
+    <div class="mb-wrap">
+      <button class="mb-btn" type="button" aria-label="더 보기"
+              aria-haspopup="menu" aria-expanded="true" aria-controls="mb-menu">
+        <i></i><i></i><i></i>
+      </button>
+      <ul class="mb-menu" id="mb-menu" role="menu">
+        <li role="none"><button type="button" role="menuitemcheckbox" aria-checked="false" data-act="pin">상단에 고정</button></li>
+        <li role="none"><button type="button" role="menuitem" data-act="copy">링크 복사</button></li>
+        <li role="none"><button type="button" role="menuitem" data-act="mute">이 글 알림 끄기</button></li>
+        <li role="none"><button type="button" role="menuitem" data-act="report" class="danger">신고하기</button></li>
+      </ul>
+    </div>
+  </header>
+  <h3>10월 디자인 리뷰 회의록</h3>
+  <p>내비게이션 시안 B로 확정했습니다. 탭 바 아이콘은 다음 주 화요일까지 다시 그립니다.</p>
+  <p class="mb-status" aria-live="polite"></p>
+</article>`,
+css:`body { align-items: flex-start; }
+.mb-card {
+  width: min(100%, 440px);
+  padding: 18px;
+  border: 1px solid #d4d7d1;
+  border-radius: 12px;
+}
+.mb-card header { display: flex; align-items: center; gap: 10px; }
+.mb-card header div { display: grid; line-height: 1.3; }
+.mb-card small { font-size: 12.5px; color: #6b706c; }
+.av { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #ffe14d; font-weight: 700; }
+.mb-pin { padding: 2px 8px; border-radius: 4px; background: #111312; color: #fff; font-size: 11.5px; font-weight: 600; }
+.mb-card h3 { margin: 14px 0 4px; font-size: 17px; }
+.mb-card p { margin: 0; font-size: 14.5px; color: #3a3f3c; }
+.mb-status { margin-top: 10px !important; font-size: 13px !important; color: #1f3fd1 !important; }
+
+.mb-wrap { position: relative; margin-left: auto; }
+.mb-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 14px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.mb-btn i { width: 4px; height: 4px; border-radius: 50%; background: #111312; }
+.mb-btn:hover,
+.mb-btn[aria-expanded="true"] { background: #f1f2ef; }
+.mb-btn:focus-visible { outline: 2px solid #1f3fd1; }
+
+.mb-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 2;
+  min-width: 170px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d4d7d1;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(17, 19, 18, .14);
+}
+.mb-menu button {
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.mb-menu button:hover,
+.mb-menu button:focus { outline: none; background: #f1f2ef; }
+.mb-menu [aria-checked="true"]::after { content: " ✓"; }
+.mb-menu .danger { color: #c0241a; }`,
+js:`var btn = document.querySelector('.mb-btn');
+var menu = document.getElementById('mb-menu');
+var status = document.querySelector('.mb-status');
+var pin = document.getElementById('mb-pin');
+
+function setOpen(open) {
+  menu.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+  if (open) menu.querySelector('button').focus();
+}
+
+btn.addEventListener('click', function (e) {
+  e.stopPropagation();
+  setOpen(menu.hidden);
+});
+
+menu.addEventListener('click', function (e) {
+  var item = e.target.closest('[data-act]');
+  if (!item) return;
+  var act = item.dataset.act;
+  if (act === 'pin') {
+    var on = item.getAttribute('aria-checked') !== 'true';
+    item.setAttribute('aria-checked', String(on));
+    pin.hidden = !on;
+    status.textContent = on ? '글을 상단에 고정했습니다.' : '고정을 해제했습니다.';
+  }
+  if (act === 'copy') status.textContent = '링크를 복사했습니다.';
+  if (act === 'mute') status.textContent = '이 글의 새 댓글 알림을 받지 않습니다.';
+  if (act === 'report') status.textContent = '신고가 접수되었습니다. 검토 후 알려 드립니다.';
+  setOpen(false);
+  btn.focus();
+});
+
+document.addEventListener('click', function (e) {
+  if (!menu.contains(e.target)) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !menu.hidden) { setOpen(false); btn.focus(); }
+});`});
+
+/* ---------------- 19 Modal ---------------- */
+E({id:'modal', en:'Modal', ko:'모달', cat:'box', h:400,
+desc:'내용이나 메시지를 담은 작은 창으로, 사용자가 상호작용해야만 닫히고 원래 흐름으로 돌아갈 수 있습니다. 휴대폰에서 항목을 지울 때 뜨는 삭제 확인 창이 대표적인 예입니다.',
+a11y:'네이티브 dialog 요소와 showModal()을 쓰면 포커스 가두기, 배경 비활성화, Esc 닫기가 기본으로 동작합니다. 제목과 본문은 aria-labelledby, aria-describedby로 연결합니다.',
+html:`<div class="md-demo">
+  <ul class="md-files">
+    <li>
+      <span>분기 보고서_최종.xlsx</span>
+      <button class="md-open" type="button">삭제</button>
+    </li>
+  </ul>
+  <p class="md-status" aria-live="polite">‘삭제’를 누르면 확인 모달이 열립니다.</p>
+</div>
+
+<dialog class="md" id="md" aria-labelledby="md-title" aria-describedby="md-desc">
+  <form method="dialog">
+    <h2 id="md-title">파일을 삭제할까요?</h2>
+    <p id="md-desc">‘분기 보고서_최종.xlsx’는 휴지통에 30일 동안 보관된 뒤 완전히 지워집니다.</p>
+    <div class="md-actions">
+      <button value="cancel" class="md-cancel">취소</button>
+      <button value="ok" class="md-ok">삭제</button>
+    </div>
+  </form>
+</dialog>`,
+css:`.md-demo { width: min(100%, 420px); }
+.md-files { margin: 0; padding: 0; list-style: none; }
+.md-files li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #d4d7d1;
+  border-radius: 10px;
+}
+.md-files span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-open {
+  flex: none;
+  padding: 6px 14px;
+  border: 1.5px solid #d42a1f;
+  border-radius: 6px;
+  background: #fff;
+  color: #c0241a;
+  font-weight: 600;
+  cursor: pointer;
+}
+.md-open:hover { background: #fff1f0; }
+.md-status { margin: 12px 0 0; font-size: 13.5px; color: #4a4f4b; }
+
+.md {
+  width: min(92vw, 360px);
+  padding: 24px;
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(17, 19, 18, .25);
+}
+.md::backdrop { background: rgba(17, 19, 18, .45); }
+.md[open] { animation: pop .18s ease-out; }
+@keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0; } }
+
+.md h2 { margin: 0 0 8px; font-size: 19px; }
+.md p { margin: 0 0 20px; font-size: 14.5px; color: #3a3f3c; }
+.md-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.md-actions button {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.md-cancel { background: #f1f2ef; color: #111312; }
+.md-ok { background: #d42a1f; color: #fff; }
+.md button:focus-visible,
+.md-open:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }`,
+js:`var dialog = document.getElementById('md');
+var opener = document.querySelector('.md-open');
+var status = document.querySelector('.md-status');
+
+opener.addEventListener('click', function () {
+  dialog.returnValue = '';
+  dialog.showModal();
+  dialog.querySelector('.md-cancel').focus();  // 위험한 동작은 '취소'에 기본 포커스
+});
+
+// 배경(backdrop)을 누르면 닫기
+dialog.addEventListener('click', function (e) {
+  if (e.target === dialog) dialog.close('cancel');
+});
+
+dialog.addEventListener('close', function () {
+  if (dialog.returnValue === 'ok') {
+    status.textContent = '파일을 휴지통으로 옮겼습니다.';
+    opener.closest('li').style.opacity = '.4';
+    opener.disabled = true;
+  } else {
+    status.textContent = '삭제를 취소했습니다.';
+  }
+  opener.focus();
+});`});
+
+/* ---------------- 20 Notification ---------------- */
+E({id:'notification', en:'Notification', ko:'알림', cat:'info', h:420,
+desc:'새 메시지처럼 확인할 것이 생겼다는 사실을 알려 주는 요소입니다. 아이콘 위의 빨간 배지가 대표적이며, 오류가 생겼거나 작업이 성공했다는 소식도 토스트 형태로 전달합니다.',
+a11y:'배지 숫자는 시각 장식이므로 버튼의 aria-label에 "알림 3개"처럼 함께 넣습니다. 토스트 목록은 aria-live="polite"로 읽히게 하고, 오류 토스트는 자동으로 사라지지 않게 합니다.',
+html:`<div class="nt">
+  <button class="nt-bell" type="button" id="nt-bell" aria-label="알림 3개">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>
+    <span class="nt-badge" id="nt-badge" aria-hidden="true">3</span>
+  </button>
+
+  <div class="nt-actions">
+    <button type="button" data-kind="msg">새 메시지 받기</button>
+    <button type="button" data-kind="ok">성공 알림</button>
+    <button type="button" data-kind="err">오류 알림</button>
+  </div>
+  <p class="nt-hint">종 아이콘을 누르면 모두 읽음 처리됩니다.</p>
+</div>
+
+<ol class="nt-toasts" id="nt-toasts" aria-live="polite"></ol>`,
+css:`.nt { display: grid; justify-items: center; gap: 18px; text-align: center; }
+.nt-bell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px; height: 56px;
+  border: 1px solid #d4d7d1;
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+}
+.nt-bell svg { width: 26px; height: 26px; fill: none; stroke: #111312; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.nt-bell:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+.nt-bell.ring svg { animation: ring .5s ease; }
+@keyframes ring { 25% { transform: rotate(14deg); } 75% { transform: rotate(-14deg); } }
+
+.nt-badge {
+  position: absolute;
+  top: -6px; right: -6px;
+  min-width: 22px; height: 22px;
+  padding: 0 6px;
+  border: 2px solid #fff;
+  border-radius: 11px;
+  background: #d42a1f;
+  color: #fff;
+  font: 700 11.5px/18px ui-monospace, Menlo, monospace;
+}
+.nt-badge[hidden] { display: none; }
+
+.nt-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.nt-actions button {
+  padding: 8px 14px;
+  border: 1px solid #c9ccc6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.nt-actions button:hover { border-color: #111312; }
+.nt-hint { margin: 0; font-size: 13px; color: #6b706c; }
+
+.nt-toasts {
+  position: fixed;
+  right: 16px; bottom: 16px; left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 0; padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 340px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 10px;
+  background: #111312;
+  color: #fff;
+  font-size: 14px;
+  text-align: left;
+  pointer-events: auto;
+  animation: slide .25s ease-out;
+}
+.toast i {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  font: 700 12px/1 ui-monospace, Menlo, monospace;
+  font-style: normal;
+}
+.toast.ok i { background: #2fb36b; color: #0b1a10; }
+.toast.err i { background: #ff5b4f; color: #2a0806; }
+.toast.msg i { background: #ffe14d; color: #111312; }
+.toast button { margin-left: auto; padding: 0 4px; border: 0; background: none; color: #b8bdb6; font-size: 18px; line-height: 1; cursor: pointer; }
+@keyframes slide { from { transform: translateY(12px); opacity: 0; } }`,
+js:`var badge = document.getElementById('nt-badge');
+var bell = document.getElementById('nt-bell');
+var toasts = document.getElementById('nt-toasts');
+var unread = 3;
+
+var copy = {
+  msg: ['M', '지원 님이 메시지를 보냈습니다: “시안 확인 부탁드려요.”'],
+  ok:  ['✓', '결제가 완료되었습니다. 영수증을 메일로 보냈습니다.'],
+  err: ['!', '업로드에 실패했습니다. 파일이 20MB를 넘지 않는지 확인해 주세요.']
+};
+
+function setUnread(n) {
+  unread = n;
+  badge.textContent = n > 9 ? '9+' : n;
+  badge.hidden = n === 0;
+  bell.setAttribute('aria-label', n ? '알림 ' + n + '개' : '새 알림 없음');
+}
+
+function toast(kind) {
+  var li = document.createElement('li');
+  li.className = 'toast ' + kind;
+  li.innerHTML = '<i aria-hidden="true"></i><span></span><button type="button" aria-label="알림 닫기">×</button>';
+  li.querySelector('i').textContent = copy[kind][0];
+  li.querySelector('span').textContent = copy[kind][1];
+  li.querySelector('button').onclick = function () { li.remove(); };
+  toasts.appendChild(li);
+  // 오류는 사용자가 직접 닫을 때까지 유지
+  if (kind !== 'err') setTimeout(function () { li.remove(); }, 4000);
+}
+
+document.querySelectorAll('[data-kind]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var kind = b.dataset.kind;
+    if (kind === 'msg') {
+      setUnread(unread + 1);
+      bell.classList.remove('ring'); void bell.offsetWidth; bell.classList.add('ring');
+    }
+    toast(kind);
+  });
+});
+
+bell.addEventListener('click', function () { setUnread(0); });`});
+
+/* ---------------- 21 Pagination ---------------- */
+E({id:'pagination', en:'Pagination', ko:'페이지네이션', cat:'nav', h:300,
+desc:'콘텐츠를 여러 페이지로 나누어 정리하는 요소로, 보통 페이지 아래쪽에 놓입니다. 지금 몇 번째 페이지에 있는지 알려 주고, 눌러서 다른 페이지로 이동하게 합니다.',
+a11y:'nav에 aria-label을 붙이고 현재 페이지 버튼에 aria-current="page"를 줍니다. 숫자 버튼은 "7페이지"처럼 읽히게 aria-label을 달고, 생략 부호 "…"는 aria-hidden으로 숨깁니다.',
+html:`<div class="pg-demo">
+  <p class="pg-info" id="pg-info" aria-live="polite"></p>
+  <nav class="pg" aria-label="검색 결과 페이지">
+    <ul id="pg"></ul>
+  </nav>
+</div>`,
+css:`.pg-demo { display: grid; justify-items: center; gap: 16px; width: 100%; }
+.pg-info { margin: 0; font-size: 14px; color: #4a4f4b; font-variant-numeric: tabular-nums; }
+
+.pg ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 0; padding: 0;
+  list-style: none;
+}
+.pg button {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14.5px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.pg button:hover:not(:disabled) { background: #f1f2ef; }
+.pg button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 1px; }
+.pg button[aria-current="page"] { background: #111312; color: #fff; font-weight: 700; }
+.pg .prev,
+.pg .next { border-color: #d4d7d1; }
+.pg button:disabled { color: #b0b5ae; cursor: not-allowed; }
+.pg .gap { min-width: 24px; text-align: center; color: #8d928b; }`,
+js:`var total = 24, current = 7, results = 237, perPage = 10;
+var ul = document.getElementById('pg');
+var info = document.getElementById('pg-info');
+
+// 1 … 6 7 8 … 24 형태의 페이지 배열 만들기
+function pages() {
+  var out = [1];
+  var start = Math.max(2, current - 1);
+  var end = Math.min(total - 1, current + 1);
+  if (current <= 3) { start = 2; end = 4; }
+  if (current >= total - 2) { start = total - 3; end = total - 1; }
+  if (start > 2) out.push('…');
+  for (var p = start; p <= end; p++) out.push(p);
+  if (end < total - 1) out.push('…');
+  out.push(total);
+  return out;
+}
+
+function addButton(label, target, disabled, cls) {
+  var li = document.createElement('li');
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = label;
+  if (cls) b.className = cls;
+  b.disabled = disabled;
+  if (typeof label === 'number') b.setAttribute('aria-label', label + '페이지');
+  if (label === current) b.setAttribute('aria-current', 'page');
+  b.addEventListener('click', function () { current = target; render(); ul.querySelector('[aria-current]').focus(); });
+  li.appendChild(b);
+  ul.appendChild(li);
+}
+
+function render() {
+  ul.innerHTML = '';
+  addButton('이전', current - 1, current === 1, 'prev');
+  pages().forEach(function (p) {
+    if (p === '…') {
+      var li = document.createElement('li');
+      li.className = 'gap';
+      li.setAttribute('aria-hidden', 'true');
+      li.textContent = '…';
+      ul.appendChild(li);
+    } else {
+      addButton(p, p, false, '');
+    }
+  });
+  addButton('다음', current + 1, current === total, 'next');
+
+  var from = (current - 1) * perPage + 1;
+  var to = Math.min(current * perPage, results);
+  info.textContent = '검색 결과 ' + results + '건 중 ' + from + '–' + to + '번째';
+}
+render();`});
+
+/* ---------------- 22 Picker ---------------- */
+E({id:'picker', en:'Picker', ko:'피커 (날짜·시간)', cat:'input', h:520,
+desc:'날짜와 시간을 고르게 하는 요소입니다. 직접 입력하는 필드보다 형식이 일정하게 유지되므로, 입력한 데이터를 깔끔하게 저장하고 다루기 쉽다는 장점이 있습니다.',
+a11y:'날짜 버튼마다 "10월 14일 수요일"처럼 요일까지 읽히는 aria-label을 붙이고, 선택된 날짜는 aria-pressed로 표시합니다. 지난 날짜와 마감된 시간은 disabled로 고를 수 없게 합니다.',
+html:`<div class="pk">
+  <div class="pk-cal">
+    <div class="pk-head">
+      <button class="pk-nav" type="button" id="pk-prev" aria-label="이전 달">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h3 id="pk-month" aria-live="polite"></h3>
+      <button class="pk-nav" type="button" id="pk-next" aria-label="다음 달">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="pk-week" aria-hidden="true">
+      <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+    </div>
+    <div class="pk-grid" id="pk-grid"></div>
+  </div>
+
+  <div class="pk-time">
+    <p class="pk-label" id="pk-time-label">시간</p>
+    <div class="pk-slots" id="pk-slots" role="group" aria-labelledby="pk-time-label"></div>
+  </div>
+
+  <p class="pk-out" id="pk-out" aria-live="polite"></p>
+</div>`,
+css:`body { align-items: flex-start; }
+.pk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: min(100%, 520px);
+}
+.pk-cal { flex: 1 1 280px; min-width: 0; }
+.pk-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.pk-head h3 { margin: 0; font-size: 16px; font-variant-numeric: tabular-nums; }
+.pk-nav {
+  display: grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border: 1px solid #d4d7d1;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+.pk-nav svg { width: 16px; height: 16px; fill: none; stroke: #111312; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.pk-week,
+.pk-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+.pk-week span { padding: 4px 0; font-size: 12px; color: #6b706c; }
+.pk-week span:first-child { color: #c0241a; }
+.pk-grid button {
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.pk-grid button:hover:not(:disabled) { background: #f1f2ef; }
+.pk-grid button.sun { color: #c0241a; }
+.pk-grid button.today { box-shadow: inset 0 0 0 1.5px #111312; }
+.pk-grid button[aria-pressed="true"] { background: #111312; color: #fff; font-weight: 700; }
+.pk-grid button:disabled { color: #c3c7c0; cursor: not-allowed; }
+.pk button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 1px; }
+
+.pk-time { flex: 1 1 140px; }
+.pk-label { margin: 6px 0 10px; font-size: 14px; font-weight: 600; }
+.pk-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
+.pk-slots button {
+  padding: 8px 0;
+  border: 1px solid #c9ccc6;
+  border-radius: 6px;
+  background: #fff;
+  font: 500 13.5px ui-monospace, Menlo, monospace;
+  cursor: pointer;
+}
+.pk-slots button[aria-pressed="true"] { background: #ffe14d; border-color: #111312; font-weight: 700; }
+.pk-slots button:disabled { color: #b0b5ae; text-decoration: line-through; cursor: not-allowed; }
+
+.pk-out {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f1f2ef;
+  font-size: 14px;
+  font-weight: 600;
+}`,
+js:`var DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+var SLOTS = ['10:00', '11:30', '14:00', '15:30', '17:00', '18:30'];
+var FULL = ['11:30'];                          // 마감된 시간
+
+var today = new Date(); today.setHours(0, 0, 0, 0);
+var view = new Date(today.getFullYear(), today.getMonth(), 1);
+var picked = new Date(today); picked.setDate(today.getDate() + 3);
+var time = '14:00';
+
+function renderCalendar() {
+  var y = view.getFullYear(), m = view.getMonth();
+  document.getElementById('pk-month').textContent = y + '년 ' + (m + 1) + '월';
+  var grid = document.getElementById('pk-grid');
+  grid.innerHTML = '';
+  var firstDay = new Date(y, m, 1).getDay();
+  var length = new Date(y, m + 1, 0).getDate();
+  for (var i = 0; i < firstDay; i++) grid.appendChild(document.createElement('span'));
+
+  for (var d = 1; d <= length; d++) {
+    (function (date) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = date.getDate();
+      b.setAttribute('aria-label', (m + 1) + '월 ' + date.getDate() + '일 ' + DAYS[date.getDay()] + '요일');
+      if (date < today) b.disabled = true;
+      if (date.getDay() === 0) b.classList.add('sun');
+      if (+date === +today) b.classList.add('today');
+      b.setAttribute('aria-pressed', String(+date === +picked));
+      b.addEventListener('click', function () { picked = date; renderCalendar(); });
+      grid.appendChild(b);
+    })(new Date(y, m, d));
+  }
+  // 이번 달보다 이전으로는 이동하지 않음
+  document.getElementById('pk-prev').disabled = y === today.getFullYear() && m === today.getMonth();
+  renderOutput();
+}
+
+function renderSlots() {
+  var box = document.getElementById('pk-slots');
+  box.innerHTML = '';
+  SLOTS.forEach(function (t) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = t;
+    b.disabled = FULL.indexOf(t) > -1;
+    if (b.disabled) b.setAttribute('aria-label', t + ' 마감');
+    b.setAttribute('aria-pressed', String(t === time));
+    b.addEventListener('click', function () { time = t; renderSlots(); renderOutput(); });
+    box.appendChild(b);
+  });
+}
+
+function renderOutput() {
+  document.getElementById('pk-out').textContent =
+    '예약: ' + picked.getFullYear() + '년 ' + (picked.getMonth() + 1) + '월 ' +
+    picked.getDate() + '일 (' + DAYS[picked.getDay()] + ') ' + time;
+}
+
+document.getElementById('pk-prev').onclick = function () { view.setMonth(view.getMonth() - 1); renderCalendar(); };
+document.getElementById('pk-next').onclick = function () { view.setMonth(view.getMonth() + 1); renderCalendar(); };
+renderCalendar();
+renderSlots();`});
+
+/* ---------------- 23 Progress Bar ---------------- */
+E({id:'progress-bar', en:'Progress Bar', ko:'진행 표시줄', cat:'info', h:360,
+desc:'여러 단계 중 지금 어디까지 왔는지 시각적으로 보여 주는 요소입니다. 결제 화면에서 장바구니, 배송 정보, 결제처럼 구매를 마치기 위해 거쳐야 하는 단계를 표시할 때 자주 씁니다.',
+a11y:'막대에 role="progressbar"를 주고 aria-valuenow와 함께 aria-valuetext로 "4단계 중 2단계: 배송 정보"처럼 단계 이름을 읽어 줍니다. 단계 목록의 현재 항목에는 aria-current="step"을 씁니다.',
+html:`<div class="pb">
+  <ol class="pb-steps" id="pb-steps">
+    <li>장바구니</li>
+    <li>배송 정보</li>
+    <li>결제</li>
+    <li>주문 완료</li>
+  </ol>
+
+  <div class="pb-track" id="pb-track" role="progressbar" aria-label="주문 진행 단계"
+       aria-valuemin="1" aria-valuemax="4" aria-valuenow="2">
+    <span id="pb-fill"></span>
+  </div>
+
+  <p class="pb-text" id="pb-text"></p>
+
+  <div class="pb-nav">
+    <button type="button" id="pb-prev">이전</button>
+    <button type="button" id="pb-next" class="pri">다음 단계</button>
+  </div>
+</div>`,
+css:`.pb { display: grid; gap: 14px; width: min(100%, 480px); }
+
+.pb-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0; padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.pb-steps li {
+  counter-increment: step;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #8d928b;
+}
+.pb-steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  border: 1.5px solid #c9ccc6;
+  border-radius: 50%;
+  background: #fff;
+  font: 600 12px ui-monospace, Menlo, monospace;
+}
+.pb-steps li.done { color: #111312; }
+.pb-steps li.done::before { content: "✓"; background: #111312; border-color: #111312; color: #fff; }
+.pb-steps li[aria-current="step"] { color: #111312; font-weight: 700; }
+.pb-steps li[aria-current="step"]::before { border-color: #111312; background: #ffe14d; color: #111312; }
+
+.pb-track { height: 6px; border-radius: 3px; background: #e3e5e0; overflow: hidden; }
+.pb-track span { display: block; height: 100%; background: #111312; transition: width .35s ease; }
+
+.pb-text { margin: 0; font-size: 14.5px; color: #3a3f3c; }
+.pb-nav { display: flex; justify-content: space-between; }
+.pb-nav button {
+  padding: 9px 18px;
+  border: 1px solid #c9ccc6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pb-nav .pri { background: #111312; border-color: #111312; color: #fff; }
+.pb-nav button:disabled { opacity: .4; cursor: not-allowed; }
+.pb-nav button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }`,
+js:`var steps = Array.prototype.slice.call(document.querySelectorAll('#pb-steps li'));
+var track = document.getElementById('pb-track');
+var fill = document.getElementById('pb-fill');
+var text = document.getElementById('pb-text');
+var prev = document.getElementById('pb-prev');
+var next = document.getElementById('pb-next');
+var notes = [
+  '담은 상품 3개, 합계 42,000원을 확인하세요.',
+  '받는 분과 주소를 입력하는 단계입니다.',
+  '결제 수단을 고르고 결제를 진행합니다.',
+  '주문이 접수되었습니다. 주문 번호 20261003-0417.'
+];
+var current = 2;
+
+function render() {
+  steps.forEach(function (li, i) {
+    li.classList.toggle('done', i < current - 1);
+    if (i === current - 1) li.setAttribute('aria-current', 'step');
+    else li.removeAttribute('aria-current');
+  });
+  fill.style.width = ((current - 1) / (steps.length - 1)) * 100 + '%';
+  track.setAttribute('aria-valuenow', current);
+  track.setAttribute('aria-valuetext', steps.length + '단계 중 ' + current + '단계: ' + steps[current - 1].textContent);
+  text.textContent = notes[current - 1];
+  prev.disabled = current === 1;
+  next.disabled = current === steps.length;
+  next.textContent = current === steps.length - 1 ? '결제하기' : '다음 단계';
+}
+
+prev.addEventListener('click', function () { current--; render(); });
+next.addEventListener('click', function () { current++; render(); });
+render();`});
+
+/* ---------------- 24 Radio Buttons ---------------- */
+E({id:'radio-buttons', en:'Radio Buttons', ko:'라디오 버튼', cat:'input', h:420,
+desc:'목록에서 단 하나만 고르게 하는 작은 원형 요소입니다. 체크박스와 자주 혼동되지만, 라디오 버튼은 여러 개가 아니라 하나만 선택할 수 있다는 점이 핵심입니다.',
+a11y:'같은 name을 가진 네이티브 radio를 쓰면 방향키로 선택지 사이를 이동하는 동작이 기본 제공됩니다. 그룹은 fieldset과 legend로 이름을 붙이고, 합계 변경은 aria-live로 알려 줍니다.',
+html:`<div class="rd-wrap">
+  <fieldset class="rd">
+    <legend>배송 방법</legend>
+
+    <label class="rd-opt">
+      <input type="radio" name="ship" value="0" checked>
+      <span class="rd-body"><b>일반 배송</b><small>2–3일 안에 도착</small></span>
+      <span class="rd-price">무료</span>
+    </label>
+
+    <label class="rd-opt">
+      <input type="radio" name="ship" value="3000">
+      <span class="rd-body"><b>빠른 배송</b><small>내일 도착</small></span>
+      <span class="rd-price">3,000원</span>
+    </label>
+
+    <label class="rd-opt">
+      <input type="radio" name="ship" value="5000">
+      <span class="rd-body"><b>새벽 배송</b><small>내일 오전 7시 전 도착</small></span>
+      <span class="rd-price">5,000원</span>
+    </label>
+  </fieldset>
+
+  <p class="rd-total">상품 42,000원 + 배송비 = <b id="rd-total" aria-live="polite">42,000원</b></p>
+</div>`,
+css:`.rd-wrap { width: min(100%, 400px); }
+.rd { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; }
+.rd legend { margin-bottom: 8px; font-size: 17px; font-weight: 700; }
+
+.rd-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid #d4d7d1;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.rd-opt:hover { border-color: #8d928b; }
+.rd-opt:has(input:checked) { border-color: #111312; background: #fafaf8; }
+
+/* 커스텀 라디오 */
+.rd-opt input {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-content: center;
+  width: 20px; height: 20px;
+  margin: 0;
+  border: 1.5px solid #111312;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+.rd-opt input::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #111312;
+  transform: scale(0);
+  transition: transform .15s ease;
+}
+.rd-opt input:checked::before { transform: scale(1); }
+.rd-opt input:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+
+.rd-body { display: grid; flex: 1; }
+.rd-body small { font-size: 13px; color: #6b706c; }
+.rd-price { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.rd-total { margin: 16px 0 0; font-size: 14px; color: #4a4f4b; text-align: right; }
+.rd-total b { font-size: 18px; color: #111312; }`,
+js:`var SUBTOTAL = 42000;
+var total = document.getElementById('rd-total');
+
+document.querySelectorAll('input[name="ship"]').forEach(function (r) {
+  r.addEventListener('change', function () {
+    total.textContent = (SUBTOTAL + Number(r.value)).toLocaleString('ko-KR') + '원';
+  });
+});`});
+
+/* ---------------- 25 Search Field ---------------- */
+E({id:'search-field', en:'Search Field', ko:'검색 필드', cat:'input', h:440,
+desc:'안쪽에 작은 돋보기 아이콘이 들어간 입력 필드로, 시스템 안에서 찾고 싶은 정보를 입력하게 합니다. 입력하는 동안 추천 결과를 보여 주면 검색 시간을 줄일 수 있습니다.',
+a11y:'감싸는 요소에 role="search", 입력에는 role="combobox"와 aria-expanded, aria-controls를 줍니다. 방향키로 추천을 고르고 aria-activedescendant로 현재 항목을 알립니다. 결과 개수는 aria-live로 읽어 줍니다.',
+html:`<div class="sf" role="search">
+  <label for="sf-input" class="sr">도시 검색</label>
+  <div class="sf-box">
+    <svg class="sf-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="sf-input" type="search" value="부" autocomplete="off"
+           placeholder="도시 이름으로 검색"
+           role="combobox" aria-expanded="false" aria-controls="sf-list" aria-autocomplete="list">
+    <button class="sf-clear" type="button" aria-label="검색어 지우기">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="sf-list" id="sf-list" role="listbox" aria-label="추천 도시"></ul>
+  <p class="sf-meta" id="sf-meta" aria-live="polite"></p>
+</div>`,
+css:`body { align-items: flex-start; padding-top: 40px; }
+.sf { width: min(100%, 400px); }
+.sf-box { position: relative; }
+.sf-ico {
+  position: absolute;
+  left: 14px; top: 50%;
+  width: 20px; height: 20px;
+  transform: translateY(-50%);
+  fill: none; stroke: #4a4f4b; stroke-width: 2; stroke-linecap: round;
+}
+.sf input {
+  width: 100%;
+  height: 50px;
+  padding: 0 44px 0 44px;
+  border: 1.5px solid #111312;
+  border-radius: 25px;
+  background: #fff;
+  font-size: 16px;
+}
+.sf input::-webkit-search-cancel-button { display: none; }
+.sf input:focus { outline: none; box-shadow: 0 0 0 4px rgba(31, 63, 209, .2); }
+
+.sf-clear {
+  position: absolute;
+  right: 10px; top: 50%;
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: #f1f2ef;
+  cursor: pointer;
+}
+.sf-clear[hidden] { display: none; }
+.sf-clear svg { width: 14px; height: 14px; fill: none; stroke: #111312; stroke-width: 2.2; stroke-linecap: round; }
+
+.sf-list {
+  margin: 8px 0 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid #d4d7d1;
+  border-radius: 12px;
+}
+.sf-list:empty { display: none; }
+.sf-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.sf-list li.active,
+.sf-list li:hover { background: #f1f2ef; }
+.sf-list small { color: #6b706c; font-size: 12.5px; }
+.sf-list mark { background: #ffe14d; color: inherit; padding: 0 1px; }
+.sf-meta { margin: 8px 4px 0; font-size: 13px; color: #6b706c; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }`,
+js:`var CITIES = [
+  ['서울', '특별시'], ['부산', '광역시'], ['대구', '광역시'], ['인천', '광역시'],
+  ['광주', '광역시'], ['대전', '광역시'], ['울산', '광역시'], ['세종', '특별자치시'],
+  ['수원', '경기'], ['부천', '경기'], ['전주', '전북'], ['경주', '경북'],
+  ['강릉', '강원'], ['춘천', '강원'], ['여수', '전남'], ['제주', '제주']
+];
+var input = document.getElementById('sf-input');
+var list = document.getElementById('sf-list');
+var meta = document.getElementById('sf-meta');
+var clear = document.querySelector('.sf-clear');
+var matches = [], active = -1;
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+}
+
+function render() {
+  var q = input.value.trim();
+  clear.hidden = !q;
+  list.innerHTML = '';
+  active = -1;
+  input.removeAttribute('aria-activedescendant');
+  matches = q ? CITIES.filter(function (c) { return c[0].indexOf(q) > -1; }) : [];
+
+  matches.forEach(function (c, i) {
+    var li = document.createElement('li');
+    li.id = 'sf-opt-' + i;
+    li.setAttribute('role', 'option');
+    li.innerHTML = '<span>' + escapeHtml(c[0]).replace(escapeHtml(q), '<mark>' + escapeHtml(q) + '</mark>') +
+                   '</span><small>' + c[1] + '</small>';
+    li.addEventListener('click', function () { pick(i); });
+    list.appendChild(li);
+  });
+  input.setAttribute('aria-expanded', String(matches.length > 0));
+  meta.textContent = !q ? '전국 16개 도시에서 찾습니다.'
+    : matches.length ? '추천 도시 ' + matches.length + '곳'
+    : '‘' + q + '’와 일치하는 도시가 없습니다. 철자를 확인해 주세요.';
+}
+
+function mark(i) {
+  var items = list.children;
+  if (!items.length) return;
+  active = (i + items.length) % items.length;
+  Array.prototype.forEach.call(items, function (li, j) { li.classList.toggle('active', j === active); });
+  input.setAttribute('aria-activedescendant', items[active].id);
+}
+
+function pick(i) {
+  input.value = matches[i][0];
+  render();
+  meta.textContent = '‘' + input.value + '’ 검색 결과로 이동합니다.';
+  list.innerHTML = '';
+  input.setAttribute('aria-expanded', 'false');
+}
+
+input.addEventListener('input', render);
+input.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowDown') { e.preventDefault(); mark(active + 1); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); mark(active - 1); }
+  if (e.key === 'Enter' && active > -1) { e.preventDefault(); pick(active); }
+  if (e.key === 'Escape') { input.value = ''; render(); }
+});
+clear.addEventListener('click', function () { input.value = ''; render(); input.focus(); });
+render();`});
+
+/* ---------------- 26 Sidebar ---------------- */
+E({id:'sidebar', en:'Sidebar', ko:'사이드바', cat:'nav', h:440,
+desc:'페이지의 옆면에 내비게이션 동작이나 콘텐츠 묶음을 모아 두는 영역입니다. 항상 펼쳐 둘 수도 있고, 아이콘만 남기고 접어서 본문 공간을 넓힐 수도 있습니다.',
+a11y:'접기 버튼은 aria-expanded와 aria-controls로 사이드바와 연결합니다. 접힌 상태에서는 라벨이 보이지 않으므로 각 항목에 title과 aria-label을 남깁니다. 현재 메뉴는 aria-current="page"로 표시합니다.',
+html:`<div class="sb-app">
+  <aside class="sb" id="sb">
+    <div class="sb-top"><b class="sb-logo">PL</b><span class="sb-label">플래너</span></div>
+
+    <nav aria-label="작업 공간">
+      <ul>
+        <li><button class="sb-item" type="button" aria-current="page" data-key="inbox" aria-label="받은 작업" title="받은 작업">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/></svg>
+          <span class="sb-label">받은 작업</span><em>12</em></button></li>
+        <li><button class="sb-item" type="button" data-key="project" aria-label="프로젝트" title="프로젝트">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"/></svg>
+          <span class="sb-label">프로젝트</span></button></li>
+        <li><button class="sb-item" type="button" data-key="calendar" aria-label="캘린더" title="캘린더">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+          <span class="sb-label">캘린더</span></button></li>
+        <li><button class="sb-item" type="button" data-key="report" aria-label="보고서" title="보고서">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg>
+          <span class="sb-label">보고서</span></button></li>
+      </ul>
+    </nav>
+
+    <button class="sb-collapse" type="button" aria-expanded="true" aria-controls="sb">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      <span class="sb-label">사이드바 접기</span>
+    </button>
+  </aside>
+
+  <main class="sb-main">
+    <h2 id="sb-title">받은 작업</h2>
+    <ul class="sb-rows" id="sb-rows"></ul>
+  </main>
+</div>`,
+css:`body { display: block; padding: 0; }
+.sb-app { display: flex; height: 100vh; background: #fafaf8; }
+
+.sb {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: 208px;
+  padding: 12px 10px;
+  background: #fff;
+  border-right: 1px solid #d4d7d1;
+  transition: width .25s ease;
+  overflow: hidden;
+}
+.sb.collapsed { width: 60px; }
+.sb-top { display: flex; align-items: center; gap: 10px; padding: 4px 4px 14px; }
+.sb-logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: #111312;
+  color: #ffe14d;
+  font: 700 12px ui-monospace, Menlo, monospace;
+}
+.sb nav ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.sb-item,
+.sb-collapse {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14.5px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sb-item:hover,
+.sb-collapse:hover { background: #f1f2ef; }
+.sb-item[aria-current="page"] { background: #111312; color: #fff; }
+.sb-item:focus-visible,
+.sb-collapse:focus-visible { outline: 2px solid #1f3fd1; outline-offset: -2px; }
+.sb svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sb-item em {
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: #ffe14d;
+  color: #111312;
+  font: 600 11px/18px ui-monospace, Menlo, monospace;
+  font-style: normal;
+}
+.sb-collapse { margin-top: auto; color: #4a4f4b; }
+.sb-collapse svg { transition: transform .25s; }
+.sb.collapsed .sb-collapse svg { transform: rotate(180deg); }
+.sb.collapsed .sb-label,
+.sb.collapsed .sb-item em { display: none; }
+
+.sb-main { flex: 1; min-width: 0; padding: 22px; }
+.sb-main h2 { margin: 0 0 12px; font-size: 21px; }
+.sb-rows { margin: 0; padding: 0; list-style: none; }
+.sb-rows li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  background: #fff;
+  border: 1px solid #e3e5e0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.sb-rows small { flex: none; color: #6b706c; }`,
+js:`var DATA = {
+  inbox:    { title: '받은 작업', rows: [['로그인 오류 문구 검토', '오늘'], ['결제 화면 QA', '내일'], ['아이콘 세트 v2 정리', '금요일']] },
+  project:  { title: '프로젝트', rows: [['모바일 앱 리뉴얼', '진행 62%'], ['디자인 시스템 2.0', '진행 35%'], ['고객센터 개편', '대기']] },
+  calendar: { title: '캘린더', rows: [['디자인 리뷰', '10:00'], ['사용성 테스트 3회차', '14:00'], ['주간 회고', '17:30']] },
+  report:   { title: '보고서', rows: [['9월 전환율 리포트', 'PDF'], ['NPS 설문 결과', '시트'], ['접근성 점검 결과', '문서']] }
+};
+var sb = document.getElementById('sb');
+var toggle = document.querySelector('.sb-collapse');
+
+function show(key) {
+  document.getElementById('sb-title').textContent = DATA[key].title;
+  document.getElementById('sb-rows').innerHTML = DATA[key].rows.map(function (r) {
+    return '<li><span>' + r[0] + '</span><small>' + r[1] + '</small></li>';
+  }).join('');
+}
+
+document.querySelectorAll('.sb-item').forEach(function (item) {
+  item.addEventListener('click', function () {
+    document.querySelector('.sb-item[aria-current]').removeAttribute('aria-current');
+    item.setAttribute('aria-current', 'page');
+    show(item.dataset.key);
+  });
+});
+
+toggle.addEventListener('click', function () {
+  var collapsed = sb.classList.toggle('collapsed');
+  toggle.setAttribute('aria-expanded', String(!collapsed));
+  toggle.setAttribute('aria-label', collapsed ? '사이드바 펼치기' : '사이드바 접기');
+});
+show('inbox');`});
+
+/* ---------------- 27 Slider Controls ---------------- */
+E({id:'slider-controls', en:'Slider Controls', ko:'슬라이더', cat:'input', h:340,
+desc:'손잡이를 끌어서 하나의 값이나 값의 범위를 고르는 요소입니다. 음량, 밝기, 쇼핑할 때의 가격대처럼 값을 조금씩 세밀하게 조정해야 할 때 씁니다.',
+a11y:'네이티브 input[type=range]를 쓰면 방향키, Page Up/Down, Home/End 조작이 기본으로 동작합니다. 범위 슬라이더는 손잡이마다 "최소 가격", "최대 가격" aria-label을 달고 현재 값은 output으로 보여 줍니다.',
+html:`<div class="sl">
+  <div class="sl-field">
+    <div class="sl-head">
+      <label for="sl-vol">음량</label>
+      <output id="sl-vol-out" for="sl-vol">60</output>
+    </div>
+    <input type="range" id="sl-vol" min="0" max="100" value="60">
+  </div>
+
+  <div class="sl-field">
+    <div class="sl-head">
+      <span id="sl-price-label">가격대</span>
+      <output id="sl-price-out">3만 – 12만 원</output>
+    </div>
+    <div class="sl-dual" role="group" aria-labelledby="sl-price-label">
+      <div class="sl-rail"><span id="sl-fill"></span></div>
+      <input type="range" id="sl-min" min="0" max="200000" step="5000" value="30000" aria-label="최소 가격">
+      <input type="range" id="sl-max" min="0" max="200000" step="5000" value="120000" aria-label="최대 가격">
+    </div>
+    <div class="sl-scale" aria-hidden="true"><span>0</span><span>10만</span><span>20만 원</span></div>
+  </div>
+</div>`,
+css:`.sl { display: grid; gap: 32px; width: min(100%, 380px); }
+.sl-field { display: grid; gap: 10px; }
+.sl-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; font-weight: 600; }
+.sl output { font: 600 14px ui-monospace, Menlo, monospace; }
+
+.sl input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+/* 트랙: --p 만큼 검정으로 채움 */
+.sl input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(#111312, #111312) 0 / var(--p, 60%) 100% no-repeat, #d4d7d1;
+}
+.sl input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: #d4d7d1; }
+.sl input[type="range"]::-moz-range-progress { height: 4px; border-radius: 2px; background: #111312; }
+.sl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  margin-top: -8px;
+  border: 2px solid #111312;
+  border-radius: 50%;
+  background: #fff;
+}
+.sl input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border: 2px solid #111312; border-radius: 50%; background: #fff; }
+.sl input[type="range"]:focus-visible { outline: none; }
+.sl input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(31, 63, 209, .35); }
+.sl input[type="range"]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(31, 63, 209, .35); }
+
+/* 두 손잡이 범위 슬라이더 */
+.sl-dual { position: relative; height: 24px; }
+.sl-rail { position: absolute; left: 0; right: 0; top: 10px; height: 4px; border-radius: 2px; background: #d4d7d1; }
+.sl-rail span { position: absolute; height: 100%; background: #111312; }
+.sl-dual input[type="range"] { position: absolute; inset: 0; pointer-events: none; }
+.sl-dual input[type="range"]::-webkit-slider-runnable-track { background: none; }
+.sl-dual input[type="range"]::-moz-range-track { background: none; }
+.sl-dual input[type="range"]::-moz-range-progress { background: none; }
+.sl-dual input[type="range"]::-webkit-slider-thumb { pointer-events: auto; cursor: grab; }
+.sl-dual input[type="range"]::-moz-range-thumb { pointer-events: auto; cursor: grab; }
+
+.sl-scale { display: flex; justify-content: space-between; font-size: 12px; color: #6b706c; }`,
+js:`// 단일 슬라이더
+var vol = document.getElementById('sl-vol');
+var volOut = document.getElementById('sl-vol-out');
+function updateVol() {
+  vol.style.setProperty('--p', vol.value + '%');
+  volOut.textContent = vol.value;
+}
+vol.addEventListener('input', updateVol);
+updateVol();
+
+// 범위 슬라이더
+var min = document.getElementById('sl-min');
+var max = document.getElementById('sl-max');
+var fill = document.getElementById('sl-fill');
+var out = document.getElementById('sl-price-out');
+var STEP = 5000, MAX = 200000;
+
+function won(v) { return v === 0 ? '0' : (v / 10000) + '만'; }
+
+function updateRange(e) {
+  var a = Number(min.value), b = Number(max.value);
+  // 두 손잡이가 겹치지 않게 최소 간격 유지
+  if (a > b - STEP) {
+    if (e && e.target === min) { a = b - STEP; min.value = a; }
+    else { b = a + STEP; max.value = b; }
+  }
+  fill.style.left = (a / MAX) * 100 + '%';
+  fill.style.right = (100 - (b / MAX) * 100) + '%';
+  out.textContent = won(a) + ' – ' + won(b) + ' 원';
+  min.setAttribute('aria-valuetext', won(a) + '원');
+  max.setAttribute('aria-valuetext', won(b) + '원');
+}
+min.addEventListener('input', updateRange);
+max.addEventListener('input', updateRange);
+updateRange();`});
+
+/* ---------------- 28 Stepper ---------------- */
+E({id:'stepper', en:'Stepper', ko:'스테퍼', cat:'input', h:340,
+desc:'두 개의 버튼으로 값을 늘리고 줄이는 요소입니다. 슬라이더처럼 값을 조정하지만, 수량이나 인원처럼 미리 정해진 단위로만 값을 바꿀 수 있다는 점이 다릅니다.',
+a11y:'− / + 버튼에는 "성인 1명 줄이기"처럼 대상을 포함한 aria-label을 붙입니다. 최솟값과 최댓값에 닿으면 버튼을 disabled로 바꾸고, 바뀐 값과 합계는 aria-live로 알려 줍니다.',
+html:`<div class="st">
+  <h3>관람 인원</h3>
+
+  <div class="st-row">
+    <div class="st-info"><b>성인</b><small>만 13세 이상 · 18,000원</small></div>
+    <div class="st-ctrl" data-price="18000" data-min="1" data-max="8" data-name="성인">
+      <button type="button" class="st-dec" aria-label="성인 1명 줄이기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+      <output aria-live="polite">2</output>
+      <button type="button" class="st-inc" aria-label="성인 1명 늘리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg></button>
+    </div>
+  </div>
+
+  <div class="st-row">
+    <div class="st-info"><b>어린이</b><small>만 3–12세 · 9,000원</small></div>
+    <div class="st-ctrl" data-price="9000" data-min="0" data-max="6" data-name="어린이">
+      <button type="button" class="st-dec" aria-label="어린이 1명 줄이기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+      <output aria-live="polite">1</output>
+      <button type="button" class="st-inc" aria-label="어린이 1명 늘리기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg></button>
+    </div>
+  </div>
+
+  <p class="st-total" aria-live="polite"></p>
+</div>`,
+css:`.st { width: min(100%, 400px); }
+.st h3 { margin: 0 0 8px; font-size: 17px; }
+.st-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e5e0;
+}
+.st-info { display: grid; }
+.st-info small { font-size: 13px; color: #6b706c; }
+
+.st-ctrl {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #111312;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.st-ctrl button {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  border: 0;
+  background: #fff;
+  cursor: pointer;
+}
+.st-ctrl button:hover:not(:disabled) { background: #f1f2ef; }
+.st-ctrl button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: -2px; }
+.st-ctrl button:disabled { cursor: not-allowed; }
+.st-ctrl button:disabled svg { stroke: #c3c7c0; }
+.st-ctrl svg { width: 18px; height: 18px; fill: none; stroke: #111312; stroke-width: 2; stroke-linecap: round; }
+.st-ctrl output {
+  min-width: 40px;
+  text-align: center;
+  font: 600 16px ui-monospace, Menlo, monospace;
+  border-left: 1px solid #e3e5e0;
+  border-right: 1px solid #e3e5e0;
+  line-height: 40px;
+}
+.st-total { margin: 14px 0 0; text-align: right; font-size: 14px; color: #4a4f4b; }
+.st-total b { font-size: 18px; color: #111312; }`,
+js:`var ctrls = Array.prototype.slice.call(document.querySelectorAll('.st-ctrl'));
+var total = document.querySelector('.st-total');
+
+function refresh() {
+  var people = 0, sum = 0;
+  ctrls.forEach(function (c) {
+    var v = Number(c.querySelector('output').textContent);
+    c.querySelector('.st-dec').disabled = v <= Number(c.dataset.min);
+    c.querySelector('.st-inc').disabled = v >= Number(c.dataset.max);
+    people += v;
+    sum += v * Number(c.dataset.price);
+  });
+  total.innerHTML = '총 ' + people + '명 · <b>' + sum.toLocaleString('ko-KR') + '원</b>';
+}
+
+ctrls.forEach(function (c) {
+  var out = c.querySelector('output');
+  function step(delta) {
+    var v = Number(out.textContent) + delta;
+    v = Math.max(Number(c.dataset.min), Math.min(Number(c.dataset.max), v));
+    out.textContent = v;
+    refresh();
+  }
+  c.querySelector('.st-dec').addEventListener('click', function () { step(-1); });
+  c.querySelector('.st-inc').addEventListener('click', function () { step(1); });
+});
+refresh();`});
+
+/* ---------------- 29 Tag ---------------- */
+E({id:'tag', en:'Tag', ko:'태그', cat:'info', h:380,
+desc:'콘텐츠에 표시를 달아 분류하는 라벨입니다. 관련 키워드로 이루어져 있어 해당 콘텐츠를 찾고 둘러보기 쉽게 만들어 주며, 소셜 서비스와 블로그에서 자주 쓰입니다.',
+a11y:'태그 삭제 버튼에는 "CSS 태그 삭제"처럼 대상이 들어간 aria-label을 붙입니다. 입력창은 label과 도움말로 개수 제한을 알리고, 추가·삭제 결과는 aria-live로 읽어 줍니다.',
+html:`<div class="tg">
+  <label for="tg-input" class="tg-label">관심 주제</label>
+  <div class="tg-box">
+    <ul class="tg-list" id="tg-list"></ul>
+    <input id="tg-input" placeholder="입력 후 Enter" autocomplete="off" aria-describedby="tg-help">
+  </div>
+  <p class="tg-help" id="tg-help">최대 6개 · 빈 칸에서 Backspace를 누르면 마지막 태그를 지웁니다.</p>
+
+  <div class="tg-suggest">
+    <span>추천</span>
+    <button type="button">접근성</button>
+    <button type="button">디자인 시스템</button>
+    <button type="button">모션</button>
+    <button type="button">타이포그래피</button>
+  </div>
+  <p class="tg-status sr" aria-live="polite"></p>
+</div>`,
+css:`.tg { width: min(100%, 440px); }
+.tg-label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+.tg-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1.5px solid #c9ccc6;
+  border-radius: 10px;
+  background: #fff;
+}
+.tg-box:focus-within { border-color: #111312; box-shadow: 0 0 0 3px rgba(31, 63, 209, .2); }
+.tg-list { display: contents; margin: 0; padding: 0; list-style: none; }
+.tg-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 4px 4px 10px;
+  border-radius: 6px;
+  background: #111312;
+  color: #fff;
+  font-size: 13.5px;
+}
+.tg-list li::before { content: "#"; opacity: .55; margin-right: 1px; }
+.tg-list button {
+  display: grid;
+  place-items: center;
+  width: 20px; height: 20px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.tg-list button:hover { background: rgba(255, 255, 255, .2); }
+.tg-list button:focus-visible { outline: 2px solid #ffe14d; }
+.tg-box input { flex: 1; min-width: 120px; height: 30px; border: 0; outline: none; font-size: 14.5px; }
+.tg-help { margin: 6px 0 14px; font-size: 12.5px; color: #6b706c; }
+
+.tg-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.tg-suggest span { font-size: 12.5px; color: #6b706c; margin-right: 2px; }
+.tg-suggest button {
+  padding: 4px 10px;
+  border: 1px dashed #8d928b;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.tg-suggest button:hover { border-style: solid; border-color: #111312; }
+.tg-suggest button:disabled { opacity: .35; cursor: default; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }`,
+js:`var tags = ['인터랙션', 'CSS', '사용성 테스트'];
+var MAX = 6;
+var list = document.getElementById('tg-list');
+var input = document.getElementById('tg-input');
+var status = document.querySelector('.tg-status');
+var suggests = document.querySelectorAll('.tg-suggest button');
+
+function render() {
+  list.innerHTML = '';
+  tags.forEach(function (t, i) {
+    var li = document.createElement('li');
+    var label = document.createElement('span');
+    label.textContent = t;
+    var x = document.createElement('button');
+    x.type = 'button';
+    x.textContent = '×';
+    x.setAttribute('aria-label', t + ' 태그 삭제');
+    x.addEventListener('click', function () { remove(i); input.focus(); });
+    li.append(label, x);
+    list.appendChild(li);
+  });
+  suggests.forEach(function (b) {
+    b.disabled = tags.indexOf(b.textContent) > -1 || tags.length >= MAX;
+  });
+  input.disabled = tags.length >= MAX;
+  input.placeholder = tags.length >= MAX ? '태그는 6개까지입니다' : '입력 후 Enter';
+}
+
+function add(text) {
+  text = text.trim().replace(/^#/, '');
+  if (!text || tags.indexOf(text) > -1 || tags.length >= MAX) return;
+  tags.push(text);
+  status.textContent = text + ' 태그를 추가했습니다.';
+  render();
+}
+function remove(i) {
+  status.textContent = tags[i] + ' 태그를 삭제했습니다.';
+  tags.splice(i, 1);
+  render();
+}
+
+input.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); add(input.value); input.value = ''; }
+  if (e.key === 'Backspace' && !input.value && tags.length) remove(tags.length - 1);
+});
+suggests.forEach(function (b) { b.addEventListener('click', function () { add(b.textContent); }); });
+render();`});
+
+/* ---------------- 30 Tab Bar ---------------- */
+E({id:'tab-bar', en:'Tab Bar', ko:'탭 바', cat:'nav', h:580,
+desc:'모바일 앱의 화면 아래쪽에 놓여, 앱의 주요 섹션 사이를 빠르게 오가게 하는 요소입니다. 보통 3–5개의 항목을 아이콘과 짧은 텍스트로 함께 보여 줍니다.',
+a11y:'탭 바를 nav로 감싸고 현재 화면 버튼에 aria-current="page"를 줍니다. 아이콘 아래에 텍스트 라벨을 항상 보여 주고, 알림 배지 수는 버튼 라벨에 함께 넣습니다.',
+html:`<div class="phone">
+  <div class="ph-screen">
+    <p class="ph-status" aria-hidden="true"><span>9:41</span><span>LTE ▮▮▮</span></p>
+    <h2 id="tb-title">홈</h2>
+    <p id="tb-text">오늘 추천 코스 3개가 준비되어 있습니다.</p>
+    <div class="ph-blocks"><span></span><span></span><span class="half"></span></div>
+  </div>
+
+  <nav class="tabbar" aria-label="주요 화면">
+    <button type="button" data-t="home" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+      <span>홈</span>
+    </button>
+    <button type="button" data-t="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <span>검색</span>
+    </button>
+    <button type="button" data-t="alert" aria-label="알림 2개">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>
+      <span>알림</span><i class="dot" aria-hidden="true">2</i>
+    </button>
+    <button type="button" data-t="me">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+      <span>내 정보</span>
+    </button>
+  </nav>
+</div>`,
+css:`.phone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: 100%;
+  height: 520px;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid #111312;
+  border-radius: 34px;
+}
+.ph-screen { flex: 1; padding: 14px 20px; }
+.ph-status { display: flex; justify-content: space-between; margin: 0 0 24px; font: 600 12px ui-monospace, Menlo, monospace; }
+.ph-screen h2 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }
+.ph-screen p { margin: 0 0 18px; font-size: 14px; color: #4a4f4b; }
+.ph-blocks { display: grid; gap: 10px; }
+.ph-blocks span { height: 64px; border-radius: 12px; background: #f1f2ef; }
+.ph-blocks .half { width: 55%; height: 28px; }
+
+.tabbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 6px 14px;
+  border-top: 1px solid #d4d7d1;
+  background: #fff;
+}
+.tabbar button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 0 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #81877f;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.tabbar button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: -2px; }
+.tabbar svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabbar button[aria-current="page"] { color: #111312; font-weight: 700; }
+.tabbar button[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  top: -7px; left: 30%; right: 30%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #111312;
+}
+.tabbar button[aria-current="page"] svg { stroke-width: 2.2; }
+.dot {
+  position: absolute;
+  top: 4px; left: 52%;
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: #d42a1f;
+  color: #fff;
+  font: 700 10px/16px ui-monospace, Menlo, monospace;
+  font-style: normal;
+}`,
+js:`var SCREENS = {
+  home:   ['홈', '오늘 추천 코스 3개가 준비되어 있습니다.'],
+  search: ['검색', '최근 검색: 북한산 둘레길, 한강 자전거 코스'],
+  alert:  ['알림', '새 알림 2개 — 예약이 확정되었고, 리뷰에 답글이 달렸습니다.'],
+  me:     ['내 정보', '이번 달 이동 거리 42.6 km · 완주 코스 7개']
+};
+
+document.querySelectorAll('.tabbar button').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelector('.tabbar [aria-current]').removeAttribute('aria-current');
+    btn.setAttribute('aria-current', 'page');
+    var s = SCREENS[btn.dataset.t];
+    document.getElementById('tb-title').textContent = s[0];
+    document.getElementById('tb-text').textContent = s[1];
+    if (btn.dataset.t === 'alert') {
+      var dot = btn.querySelector('.dot');
+      if (dot) { dot.remove(); btn.removeAttribute('aria-label'); }
+    }
+  });
+});`});
+
+/* ---------------- 31 Tooltip ---------------- */
+E({id:'tooltip', en:'Tooltip', ko:'툴팁', cat:'info', h:360,
+desc:'인터페이스의 특정 부분이나 과정을 이해하도록 돕는 짧은 힌트입니다. 마우스를 올리거나 키보드로 포커스했을 때 나타나며, 꼭 필요한 정보는 툴팁 안에 숨기지 않습니다.',
+a11y:'툴팁에 role="tooltip"을 주고 트리거의 aria-describedby로 연결합니다. 마우스 hover뿐 아니라 키보드 focus에도 나타나야 하며, Esc를 누르면 포커스를 옮기지 않고 닫을 수 있어야 합니다(WCAG 1.4.13).',
+html:`<div class="tt-demo">
+  <div class="tt-field">
+    <span class="tt-label">정산 수수료 3.3%</span>
+    <span class="tt">
+      <button type="button" class="tt-ico" aria-label="수수료 안내" aria-describedby="tip-fee">?</button>
+      <span role="tooltip" id="tip-fee">판매 금액에서 사업소득세 3%와 지방소득세 0.3%가 차감됩니다.</span>
+    </span>
+  </div>
+
+  <div class="tt-toolbar" role="toolbar" aria-label="글 서식">
+    <span class="tt tt-bottom">
+      <button type="button" aria-label="굵게" aria-describedby="tip-b"><b>B</b></button>
+      <span role="tooltip" id="tip-b">굵게 <kbd>Ctrl</kbd>+<kbd>B</kbd></span>
+    </span>
+    <span class="tt tt-bottom">
+      <button type="button" aria-label="기울임" aria-describedby="tip-i"><i>I</i></button>
+      <span role="tooltip" id="tip-i">기울임 <kbd>Ctrl</kbd>+<kbd>I</kbd></span>
+    </span>
+    <span class="tt tt-bottom">
+      <button type="button" aria-label="밑줄" aria-describedby="tip-u"><u>U</u></button>
+      <span role="tooltip" id="tip-u">밑줄 <kbd>Ctrl</kbd>+<kbd>U</kbd></span>
+    </span>
+  </div>
+  <p class="tt-hint">마우스를 올리거나 Tab 키로 이동해 보세요. Esc로 닫힙니다.</p>
+</div>`,
+css:`.tt-demo { display: grid; justify-items: center; gap: 40px; padding-top: 30px; }
+.tt-field { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; }
+
+.tt { position: relative; display: inline-flex; }
+.tt-ico {
+  display: grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  padding: 0;
+  border: 1.5px solid #111312;
+  border-radius: 50%;
+  background: #fff;
+  font: 700 12px/1 ui-monospace, Menlo, monospace;
+  cursor: help;
+}
+
+.tt [role="tooltip"] {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #111312;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: center;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .15s, transform .15s, visibility .15s;
+}
+/* 꼬리 */
+.tt [role="tooltip"]::after {
+  content: "";
+  position: absolute;
+  top: 100%; left: 50%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top-color: #111312;
+}
+.tt-bottom [role="tooltip"] { top: calc(100% + 10px); bottom: auto; transform: translate(-50%, -4px); }
+.tt-bottom [role="tooltip"]::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #111312; }
+
+.tt:hover [role="tooltip"],
+.tt:focus-within [role="tooltip"] { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.tt.dismissed [role="tooltip"] { opacity: 0; visibility: hidden; }
+
+.tt kbd {
+  padding: 0 4px;
+  border: 1px solid #5b605c;
+  border-radius: 3px;
+  font: 11px ui-monospace, Menlo, monospace;
+}
+
+.tt-toolbar { display: flex; gap: 4px; padding: 4px; border: 1px solid #d4d7d1; border-radius: 10px; }
+.tt-toolbar button {
+  width: 38px; height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+.tt-toolbar button:hover { background: #f1f2ef; }
+.tt button:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 2px; }
+.tt-hint { margin: 0; font-size: 13px; color: #6b706c; }`,
+js:`// Esc로 열려 있는 툴팁 숨기기 (포커스는 그대로)
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  document.querySelectorAll('.tt').forEach(function (t) {
+    if (t.matches(':hover') || t.matches(':focus-within')) t.classList.add('dismissed');
+  });
+});
+
+// 다시 hover/focus 하면 툴팁 복구
+document.querySelectorAll('.tt').forEach(function (t) {
+  ['mouseleave', 'focusout'].forEach(function (ev) {
+    t.addEventListener(ev, function () { t.classList.remove('dismissed'); });
+  });
+});`});
+
+/* ---------------- 32 Toggle ---------------- */
+E({id:'toggle', en:'Toggle', ko:'토글', cat:'input', h:420,
+desc:'켜고 끄는 스위치입니다. 이름 그대로 어떤 기능을 켜거나 끄는 데 쓰며, 저장 버튼 없이 누르는 즉시 적용되는 설정에 어울립니다.',
+a11y:'button에 role="switch"와 aria-checked를 주면 스크린리더가 "켜짐/꺼짐"으로 읽습니다. 설정 이름은 aria-labelledby로 연결하고, 상태를 색에만 의존하지 않도록 손잡이 위치와 텍스트도 함께 바뀝니다.',
+html:`<div class="tgl">
+  <h3>설정</h3>
+  <ul>
+    <li>
+      <div><b id="tgl-1">방해 금지 모드</b><small>오후 10시 – 오전 7시 동안 알림을 숨깁니다</small></div>
+      <button type="button" class="sw" role="switch" aria-checked="true" aria-labelledby="tgl-1"><span class="sw-text">켬</span></button>
+    </li>
+    <li>
+      <div><b id="tgl-2">위치 기록</b><small>방문한 장소를 30일 동안 저장합니다</small></div>
+      <button type="button" class="sw" role="switch" aria-checked="false" aria-labelledby="tgl-2"><span class="sw-text">끔</span></button>
+    </li>
+    <li>
+      <div><b id="tgl-3">자동 업데이트</b><small>Wi‑Fi에 연결되면 앱을 업데이트합니다</small></div>
+      <button type="button" class="sw" role="switch" aria-checked="true" aria-labelledby="tgl-3"><span class="sw-text">켬</span></button>
+    </li>
+    <li class="off">
+      <div><b id="tgl-4">데이터 절약</b><small>Wi‑Fi에 연결된 동안에는 바꿀 수 없습니다</small></div>
+      <button type="button" class="sw" role="switch" aria-checked="false" aria-labelledby="tgl-4" disabled><span class="sw-text">끔</span></button>
+    </li>
+  </ul>
+</div>`,
+css:`.tgl { width: min(100%, 420px); }
+.tgl h3 { margin: 0 0 6px; font-size: 17px; }
+.tgl ul { margin: 0; padding: 0; list-style: none; }
+.tgl li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e5e0;
+}
+.tgl li div { display: grid; }
+.tgl small { font-size: 13px; color: #6b706c; }
+.tgl li.off b { color: #81877f; }
+
+/* 스위치 */
+.sw {
+  position: relative;
+  flex: none;
+  width: 52px; height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 15px;
+  background: #c3c7c0;
+  cursor: pointer;
+  transition: background .2s;
+}
+.sw::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(17, 19, 18, .3);
+  transition: transform .2s ease;
+}
+.sw[aria-checked="true"] { background: #111312; }
+.sw[aria-checked="true"]::after { transform: translateX(22px); }
+.sw:focus-visible { outline: 2px solid #1f3fd1; outline-offset: 3px; }
+.sw:disabled { opacity: .45; cursor: not-allowed; }
+
+/* 색 외의 단서: 켬/끔 텍스트 */
+.sw-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+.sw[aria-checked="true"] .sw-text { left: 8px; }
+.sw[aria-checked="false"] .sw-text { right: 7px; color: #3a3f3c; }`,
+js:`document.querySelectorAll('.sw').forEach(function (sw) {
+  sw.addEventListener('click', function () {
+    var on = sw.getAttribute('aria-checked') !== 'true';
+    sw.setAttribute('aria-checked', String(on));
+    sw.querySelector('.sw-text').textContent = on ? '켬' : '끔';
+  });
+});`});
+var CATS = {
+  input: '입력',
+  nav:   '내비게이션',
+  info:  '정보 전달',
+  box:   '컨테이너'
+};
+var CAT_ORDER = ['input', 'nav', 'info', 'box'];
+
+var RESET_CSS = "*,*::before,*::after{box-sizing:border-box}html,body{height:100%}" +
+  "body{margin:0;min-height:100%;display:flex;align-items:center;justify-content:center;" +
+  "padding:28px 20px;font-family:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;" +
+  "font-size:15px;line-height:1.55;color:#111312;background:#fff;-webkit-font-smoothing:antialiased}" +
+  "button,input,textarea,select{font-family:inherit}";
+
+var state = { id: null, lang: 'html', mobile: false, cat: 'all', q: '' };
+
+function buildPreviewDoc(item) {
+  return '<!doctype html><html lang="ko"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<style>' + RESET_CSS + '\n' + item.css + '</style></head><body>' +
+    item.html + '<scr' + 'ipt>\ntry{\n' + item.js + '\n}catch(e){document.body.insertAdjacentHTML("beforeend","<pre style=\\"position:fixed;left:12px;right:12px;bottom:12px;padding:10px;background:#fff1f0;border:1px solid #d42a1f;border-radius:8px;font-size:12px;color:#8a1810;white-space:pre-wrap\\">"+e+"</pre>")}\n</scr' + 'ipt>' +
+    '</body></html>';
+}
+
+/* ---------- 좌측 색인 ---------- */
+var listEl = document.getElementById('list');
+var catsEl = document.getElementById('cats');
+
+function renderCatFilters() {
+  catsEl.innerHTML = '';
+  var allBtn = document.createElement('button');
+  allBtn.type = 'button'; allBtn.textContent = '전체'; allBtn.dataset.cat = 'all';
+  catsEl.appendChild(allBtn);
+  CAT_ORDER.forEach(function (c) {
+    var n = ITEMS.filter(function (it) { return it.cat === c; }).length;
+    var b = document.createElement('button');
+    b.type = 'button'; b.dataset.cat = c;
+    b.innerHTML = CATS[c] + '<b>' + n + '</b>';
+    catsEl.appendChild(b);
+  });
+  catsEl.querySelectorAll('button').forEach(function (b) {
+    b.setAttribute('aria-pressed', String(b.dataset.cat === state.cat));
+    b.addEventListener('click', function () { state.cat = b.dataset.cat; renderCatFilters(); renderList(); });
+  });
+}
+
+function renderList() {
+  var q = state.q.trim().toLowerCase();
+  var filtered = ITEMS.filter(function (it) {
+    if (state.cat !== 'all' && it.cat !== state.cat) return false;
+    if (!q) return true;
+    return it.en.toLowerCase().indexOf(q) > -1 || it.ko.indexOf(q) > -1;
+  });
+
+  listEl.innerHTML = '';
+  if (!filtered.length) {
+    var empty = document.createElement('li');
+    empty.className = 'list-empty';
+    empty.textContent = '일치하는 엘리먼트가 없습니다.';
+    listEl.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(function (it) {
+    var idx = ITEMS.indexOf(it);
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + it.id;
+    a.dataset.id = it.id;
+    a.innerHTML = '<span class="n">' + String(idx + 1).padStart(2, '0') + '</span>' +
+      '<span><span class="en">' + it.en + '</span><span class="ko">' + it.ko + '</span></span>' +
+      '<span class="c">' + CATS[it.cat] + '</span>';
+    a.addEventListener('click', function (e) { e.preventDefault(); select(it.id); closeMobileIndex(); });
+    li.appendChild(a);
+    listEl.appendChild(li);
+  });
+  markCurrent();
+}
+
+function markCurrent() {
+  listEl.querySelectorAll('a').forEach(function (a) {
+    a.toggleAttribute('aria-current', a.dataset.id === state.id);
+    if (a.dataset.id === state.id) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+}
+
+document.getElementById('find').addEventListener('input', function (e) {
+  state.q = e.target.value; renderList();
+});
+
+/* ---------- 메인 스펙 시트 ---------- */
+var elNo = document.getElementById('s-no');
+var elCat = document.getElementById('s-cat');
+var elCatDesc = document.getElementById('s-catdesc');
+var elTitle = document.getElementById('s-title');
+var elDesc = document.getElementById('s-desc');
+var elA11y = document.getElementById('s-a11y');
+var frame = document.getElementById('frame');
+var codeInner = document.getElementById('code-inner');
+var stage = document.getElementById('stage');
+
+var CAT_DESC = {
+  input: '사용자가 값을 입력하거나 고르는 요소',
+  nav:   '다른 화면이나 위치로 이동을 돕는 요소',
+  info:  '상태나 정보를 사용자에게 전달하는 요소',
+  box:   '관련된 콘텐츠를 담아 두는 요소'
+};
+
+function select(id) {
+  var item = ITEMS.find(function (it) { return it.id === id; });
+  if (!item) return;
+  var idx = ITEMS.indexOf(item);
+  state.id = id;
+
+  elNo.textContent = String(idx + 1).padStart(2, '0');
+  elCat.textContent = CATS[item.cat];
+  elCatDesc.textContent = CAT_DESC[item.cat];
+  elTitle.innerHTML = item.en + '<small>' + item.ko + '</small>';
+  elDesc.textContent = item.desc;
+  elA11y.textContent = item.a11y;
+
+  frame.srcdoc = buildPreviewDoc(item);
+  renderTabs(item);
+  renderPager(idx);
+  markCurrent();
+  if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id);
+  document.getElementById('main').scrollTo({ top: 0 });
+}
+
+/* ---------- 미리보기 너비 ---------- */
+document.getElementById('vw-full').addEventListener('click', function () { setWidth(false); });
+document.getElementById('vw-mobile').addEventListener('click', function () { setWidth(true); });
+function setWidth(mobile) {
+  state.mobile = mobile;
+  stage.classList.toggle('is-mobile', mobile);
+  document.getElementById('vw-full').setAttribute('aria-pressed', String(!mobile));
+  document.getElementById('vw-mobile').setAttribute('aria-pressed', String(mobile));
+}
+document.getElementById('rerun').addEventListener('click', function () {
+  var item = ITEMS.find(function (it) { return it.id === state.id; });
+  frame.srcdoc = buildPreviewDoc(item);
+});
+
+/* ---------- 소스 탭 ---------- */
+var LANG_CLASS = { html: 'language-xml', css: 'language-css', js: 'language-javascript' };
+function renderTabs(item) {
+  ['html', 'css', 'js'].forEach(function (lang) {
+    var small = document.getElementById('tab-' + lang).querySelector('small');
+    var lines = item[lang].split('\n').length;
+    small.textContent = lines + '줄';
+  });
+  if (!['html', 'css', 'js'].includes(state.lang)) state.lang = 'html';
+  showCode(item, state.lang);
+}
+function showCode(item, lang) {
+  state.lang = lang;
+  ['html', 'css', 'js'].forEach(function (l) {
+    document.getElementById('tab-' + l).setAttribute('aria-selected', String(l === lang));
+  });
+  codeInner.className = LANG_CLASS[lang];
+  codeInner.textContent = item[lang];
+  if (window.hljs) window.hljs.highlightElement(codeInner);
+}
+['html', 'css', 'js'].forEach(function (lang) {
+  document.getElementById('tab-' + lang).addEventListener('click', function () {
+    var item = ITEMS.find(function (it) { return it.id === state.id; });
+    showCode(item, lang);
+  });
+});
+
+/* ---------- 코드 복사 ---------- */
+var toast = document.getElementById('toast');
+var toastTimer;
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+}
+document.getElementById('copy').addEventListener('click', function () {
+  var text = codeInner.textContent;
+  function done() { showToast(state.lang.toUpperCase() + ' 코드를 복사했습니다.'); }
+  function fail() {
+    var r = document.createRange();
+    r.selectNodeContents(codeInner);
+    var sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(r);
+    showToast('복사 권한이 없어 코드를 선택해 두었습니다. Ctrl/Cmd+C를 눌러 주세요.');
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, fail);
+  } else fail();
+});
+
+/* ---------- 이전/다음 ---------- */
+var prevA = document.getElementById('prev');
+var nextA = document.getElementById('next');
+function renderPager(idx) {
+  var prevItem = ITEMS[idx - 1];
+  var nextItem = ITEMS[idx + 1];
+  prevA.hidden = !prevItem;
+  nextA.hidden = !nextItem;
+  if (prevItem) { prevA.querySelector('b').textContent = prevItem.en; prevA.onclick = function (e) { e.preventDefault(); select(prevItem.id); }; }
+  if (nextItem) { nextA.querySelector('b').textContent = nextItem.en; nextA.onclick = function (e) { e.preventDefault(); select(nextItem.id); }; }
+}
+
+/* ---------- 모바일 색인 서랍 ---------- */
+var indexEl = document.getElementById('index');
+var openBtn = document.getElementById('open-index');
+function closeMobileIndex() { indexEl.classList.remove('open'); openBtn.setAttribute('aria-expanded', 'false'); }
+openBtn.addEventListener('click', function () {
+  var open = !indexEl.classList.contains('open');
+  indexEl.classList.toggle('open', open);
+  openBtn.setAttribute('aria-expanded', String(open));
+});
+document.addEventListener('click', function (e) {
+  if (window.innerWidth > 900) return;
+  if (indexEl.classList.contains('open') && !indexEl.contains(e.target) && e.target !== openBtn && !openBtn.contains(e.target)) closeMobileIndex();
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMobileIndex(); });
+
+/* ---------- 시작 ---------- */
+renderCatFilters();
+renderList();
+var startId = (location.hash || '').replace('#', '');
+select(ITEMS.some(function (it) { return it.id === startId; }) ? startId : ITEMS[0].id);
+</script>
