@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UI 엘리먼트 도감</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,6 +141,8 @@ button{font:inherit;color:inherit}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+</head>
+<body>
 
 <div class="shell">
   <aside class="index" id="index" aria-label="UI 엘리먼트 목록">
@@ -4045,3 +4052,5 @@ renderList();
 var startId = (location.hash || '').replace('#', '');
 select(ITEMS.some(function (it) { return it.id === startId; }) ? startId : ITEMS[0].id);
 </script>
+</body>
+</html>
